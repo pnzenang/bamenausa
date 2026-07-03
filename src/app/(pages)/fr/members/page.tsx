@@ -1,25 +1,25 @@
 import type { Metadata } from 'next'
 
-import GaleryPage from '@/components/pages/galery-page'
+import PublicMembersPage from '@/components/pages/public-members-page'
 
 import { publicPageContent } from '@/assets/data/public-pages'
 
-const content = publicPageContent.en.galery
+const content = publicPageContent.fr.members
 
 export const metadata: Metadata = {
   title: content.metadata.title,
   description: content.metadata.description,
   alternates: {
-    canonical: '/galery',
+    canonical: '/fr/members',
     languages: {
-      'en-US': '/galery',
-      'fr-FR': '/fr/galery'
+      'en-US': '/members',
+      'fr-FR': '/fr/members'
     }
   },
   openGraph: {
     title: content.metadata.title,
     description: content.metadata.description,
-    locale: 'en_US'
+    locale: 'fr_FR'
   },
   twitter: {
     title: content.metadata.title,
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   }
 }
 
-const GaleryRoutePage = () => {
-  return <GaleryPage locale='en' />
+const FrenchMembersPage = () => {
+  return <PublicMembersPage locale='fr' />
 }
 
-export default GaleryRoutePage
+export default FrenchMembersPage

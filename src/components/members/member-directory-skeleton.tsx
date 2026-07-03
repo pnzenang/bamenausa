@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 
 type MemberDirectorySkeletonProps = {
   variant?: 'public' | 'full'
+  loadingLabel?: string
 }
 
 const skeletonItems = Array.from({ length: 6 }, (_, index) => index)
@@ -55,9 +56,9 @@ const FullMemberSkeletonCard = () => {
   )
 }
 
-export const MemberDirectorySkeleton = ({ variant = 'public' }: MemberDirectorySkeletonProps) => {
+export const MemberDirectorySkeleton = ({ variant = 'public', loadingLabel = 'Loading members' }: MemberDirectorySkeletonProps) => {
   return (
-    <div className='space-y-4' aria-label='Loading members'>
+    <div className='space-y-4' aria-label={loadingLabel}>
       <div className='bg-background rounded-md border p-4'>
         <div className='grid gap-3 md:grid-cols-[minmax(0,1fr)_180px_180px]'>
           <SkeletonBlock className='h-10 w-full' />

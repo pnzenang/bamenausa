@@ -2,13 +2,16 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRightIcon, HeartHandshakeIcon } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { ArrowRightIcon, HeartHandshakeIcon, UserPlusIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { MotionPreset } from '@/components/ui/motion-preset'
 
 import type { SiteContent } from '@/assets/data/site-content'
 
+import { signUpPath } from '@/lib/auth'
+import { getLocaleFromPathname, getLocalizedHref } from '@/lib/i18n'
 import { scrollToSection } from '@/lib/utils'
 
 const heroImageSrc = '/images/galery/hero1.jpg'
@@ -18,6 +21,10 @@ type VideoHeroSectionProps = {
 }
 
 const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
+  const pathname = usePathname()
+  const locale = getLocaleFromPathname(pathname)
+  const localizedSignUpPath = getLocalizedHref(signUpPath, locale)
+
   return (
     <section className='bg-foreground relative mb-8 min-h-[760px] overflow-hidden sm:mb-10 sm:min-h-[700px] lg:mb-14 lg:min-h-[720px]'>
       <Image
@@ -32,19 +39,19 @@ const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
       <div className='absolute inset-0 bg-linear-to-r from-black/45 via-black/15 to-transparent' />
       <div className='absolute inset-0 bg-linear-to-t from-black/45 via-transparent to-white/10' />
 
-      <div className='max-w-9xl relative z-10 mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='flex min-h-[760px] flex-col justify-between gap-10 py-5 text-white sm:min-h-[700px] sm:py-8 lg:min-h-[720px] lg:py-12'>
-          <div className='grid gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end'>
-            <div className='max-w-9xl'>
+      <div className='relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+        <div className='flex min-h-[760px] flex-col justify-center gap-10 py-16 text-center text-white sm:min-h-[700px] lg:min-h-[720px] lg:text-left'>
+          <div className='mx-auto grid w-full max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(280px,1fr)]'>
+            <div className='mx-auto max-w-4xl lg:mx-0'>
               <MotionPreset fade slide={{ offset: 50 }} blur transition={{ duration: 0.5 }} delay={0.2}>
                 <p className='mb-4 text-sm font-semibold tracking-normal text-white/75 uppercase'>{copy.eyebrow}</p>
                 <h1 className='text-4xl leading-tight font-bold text-balance sm:text-5xl lg:text-6xl'>{copy.title}</h1>
               </MotionPreset>
               <MotionPreset fade slide={{ offset: 50 }} blur transition={{ duration: 0.5 }} delay={0.35}>
-                <p className='mt-5 max-w-2xl text-base leading-7 text-white/80 sm:text-lg'>{copy.description}</p>
+                <p className='mx-auto mt-5 max-w-3xl text-base leading-7 text-white/80 sm:text-lg lg:mx-0'>{copy.description}</p>
               </MotionPreset>
               <MotionPreset fade slide={{ offset: 50 }} blur transition={{ duration: 0.5 }} delay={0.5}>
-                <div className='mt-8 flex flex-col gap-3 sm:flex-row'>
+                <div className='mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap lg:justify-start'>
                   <Button
                     size='lg'
                     asChild
@@ -59,6 +66,17 @@ const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
                     >
                       {copy.donateCta}
                       <HeartHandshakeIcon />
+                    </Link>
+                  </Button>
+                  <Button
+                    size='lg'
+                    variant='secondary'
+                    asChild
+                    className='group w-fit rounded-full bg-white/90 text-base text-slate-950 hover:bg-white has-[>svg]:px-6'
+                  >
+                    <Link href={localizedSignUpPath}>
+                      {copy.joinCta}
+                      <UserPlusIcon />
                     </Link>
                   </Button>
                   <Button
@@ -83,9 +101,9 @@ const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
             </div>
 
             <MotionPreset fade slide={{ offset: 50 }} blur transition={{ duration: 0.5 }} delay={0.65}>
-              <div className='max-w-md space-y-4 rounded-md border border-white/20 bg-black/25 p-5 text-white shadow-2xl backdrop-blur-sm'>
+              <div className='mx-auto w-full max-w-2xl space-y-4 rounded-md border border-white/20 bg-black/25 p-5 text-white shadow-2xl backdrop-blur-sm lg:mx-0'>
                 <p className='text-sm font-semibold tracking-normal text-white/70 uppercase'>{copy.missionEyebrow}</p>
-                <div className='grid gap-4 sm:grid-cols-3 lg:grid-cols-1'>
+                <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-1'>
                   {copy.missionItems.map(({ title, description }) => (
                     <div key={title}>
                       <h2 className='text-lg font-semibold'>{title}</h2>

@@ -18,7 +18,7 @@ import { ModeToggle } from '@/components/layout/mode-toggle'
 import { siteContent } from '@/assets/data/site-content'
 
 import { profilePath, signInPath } from '@/lib/auth'
-import { getAlternateLocaleHref, getLocaleFromPathname, getLocaleHomeHref } from '@/lib/i18n'
+import { getAlternateLocaleHref, getLocaleFromPathname, getLocaleHomeHref, getLocalizedHref } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
 import BamenaLogo from '@/assets/svg/bamena-logo'
@@ -90,7 +90,8 @@ const Header = ({ className }: HeaderProps) => {
   const content = siteContent[locale]
   const homeHref = getLocaleHomeHref(locale)
   const isHomePage = pathname === homeHref
-  const alternateLocaleHref = getAlternateLocaleHref(locale)
+  const alternateLocaleHref = getAlternateLocaleHref(pathname)
+  const localizedSignInPath = getLocalizedHref(signInPath, locale)
 
   const navigationData = isHomePage
     ? content.navigation
@@ -143,7 +144,7 @@ const Header = ({ className }: HeaderProps) => {
         <MenuNavigation
           navigationData={navigationData}
           activeSection={activeSection}
-          className='**:data-[slot=navigation-menu-list]:gap-1 max-lg:hidden'
+          className='**:data-[slot=navigation-menu-list]:gap-1 max-xl:hidden'
         />
 
         {/* Actions */}
@@ -165,7 +166,7 @@ const Header = ({ className }: HeaderProps) => {
                 className='group relative ml-4 w-fit overflow-hidden rounded-full text-base before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] has-[>svg]:px-6 max-sm:hidden dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.2)_50%,transparent_75%,transparent_100%)]'
                 asChild
               >
-                <Link href={signInPath}>
+                <Link href={localizedSignInPath}>
                   {content.header.loginCta}
                   <LogInIcon />
                 </Link>
@@ -175,7 +176,7 @@ const Header = ({ className }: HeaderProps) => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button className='ml-4 rounded-full sm:hidden' size='icon' asChild>
-                    <Link href={signInPath}>
+                    <Link href={localizedSignInPath}>
                       <LogInIcon />
                     </Link>
                   </Button>
@@ -207,7 +208,7 @@ const Header = ({ className }: HeaderProps) => {
             navigationData={navigationData}
             activeSection={activeSection}
             trigger={
-              <Button variant='outline' size='icon' className='ml-3 rounded-full lg:hidden'>
+              <Button variant='outline' size='icon' className='ml-3 rounded-full xl:hidden'>
                 <MenuIcon />
                 <span className='sr-only'>{content.header.menuLabel}</span>
               </Button>

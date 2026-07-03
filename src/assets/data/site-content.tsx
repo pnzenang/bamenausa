@@ -94,6 +94,7 @@ export type SiteContent = {
     title: string
     description: string
     donateCta: string
+    joinCta: string
     programsCta: string
     missionEyebrow: string
     missionItems: {
@@ -211,7 +212,11 @@ export const siteContent: Record<Locale, SiteContent> = {
         href: '/members'
       },
       {
-        title: 'Galery',
+        title: 'Necrology',
+        href: '/necrology'
+      },
+      {
+        title: 'Gallery',
         href: '/galery'
       },
       {
@@ -256,6 +261,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       description:
         'Bamena-USA is a nonprofit home for heritage education, youth mentorship, family connection, and fundraising that turns cultural pride into lasting community impact.',
       donateCta: 'Donate',
+      joinCta: 'Join us',
       programsCta: 'Explore programs',
       missionEyebrow: 'Our Mission',
       missionItems: [
@@ -526,11 +532,15 @@ export const siteContent: Record<Locale, SiteContent> = {
       },
       {
         title: 'Membres',
-        href: '/members'
+        href: '/fr/members'
+      },
+      {
+        title: 'Nécrologie',
+        href: '/fr/necrology'
       },
       {
         title: 'Galerie',
-        href: '/galery'
+        href: '/fr/galery'
       },
       {
         title: 'Contact',
@@ -551,10 +561,10 @@ export const siteContent: Record<Locale, SiteContent> = {
           title: 'Événements',
           href: '#initiatives'
         },
-        {
-          title: 'Membres',
-          href: '/members'
-        },
+      {
+        title: 'Membres',
+        href: '/fr/members'
+      },
         {
           title: 'Contact',
           href: '#contact-us'
@@ -574,6 +584,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       description:
         "Bamena-USA est un espace associatif à but non lucratif dédié à l'éducation culturelle, au mentorat des jeunes, aux liens familiaux et aux collectes de fonds qui transforment la fierté culturelle en impact durable pour la communauté.",
       donateCta: 'Faire un don',
+      joinCta: 'Nous rejoindre',
       programsCta: 'Découvrir les programmes',
       missionEyebrow: 'Notre mission',
       missionItems: [

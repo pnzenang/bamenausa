@@ -4,13 +4,13 @@ import GaleryPage from '@/components/pages/galery-page'
 
 import { publicPageContent } from '@/assets/data/public-pages'
 
-const content = publicPageContent.en.galery
+const content = publicPageContent.fr.galery
 
 export const metadata: Metadata = {
   title: content.metadata.title,
   description: content.metadata.description,
   alternates: {
-    canonical: '/galery',
+    canonical: '/fr/galery',
     languages: {
       'en-US': '/galery',
       'fr-FR': '/fr/galery'
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: content.metadata.title,
     description: content.metadata.description,
-    locale: 'en_US'
+    locale: 'fr_FR'
   },
   twitter: {
     title: content.metadata.title,
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   }
 }
 
-const GaleryRoutePage = () => {
-  return <GaleryPage locale='en' />
+const FrenchGaleryPage = () => {
+  return <GaleryPage locale='fr' />
 }
 
-export default GaleryRoutePage
+export default FrenchGaleryPage

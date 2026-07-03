@@ -1,25 +1,25 @@
 import type { Metadata } from 'next'
 
-import GaleryPage from '@/components/pages/galery-page'
+import NecrologyPage from '@/components/pages/necrology-page'
 
 import { publicPageContent } from '@/assets/data/public-pages'
 
-const content = publicPageContent.en.galery
+const content = publicPageContent.fr.necrology
 
 export const metadata: Metadata = {
   title: content.metadata.title,
   description: content.metadata.description,
   alternates: {
-    canonical: '/galery',
+    canonical: '/fr/necrology',
     languages: {
-      'en-US': '/galery',
-      'fr-FR': '/fr/galery'
+      'en-US': '/necrology',
+      'fr-FR': '/fr/necrology'
     }
   },
   openGraph: {
     title: content.metadata.title,
     description: content.metadata.description,
-    locale: 'en_US'
+    locale: 'fr_FR'
   },
   twitter: {
     title: content.metadata.title,
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   }
 }
 
-const GaleryRoutePage = () => {
-  return <GaleryPage locale='en' />
+const FrenchNecrologyPage = () => {
+  return <NecrologyPage locale='fr' />
 }
 
-export default GaleryRoutePage
+export default FrenchNecrologyPage

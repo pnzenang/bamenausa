@@ -3,9 +3,9 @@ import type { Metadata } from 'next'
 import LocalizedSignUpPage from '@/components/auth/sign-up-page'
 
 export const metadata: Metadata = {
-  title: 'Sign Up',
+  title: 'Inscription',
   alternates: {
-    canonical: '/sign-up',
+    canonical: '/fr/sign-up',
     languages: {
       'en-US': '/sign-up',
       'fr-FR': '/fr/sign-up'
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   }
 }
 
-const SignUpPage = () => {
-  return <LocalizedSignUpPage locale='en' />
+const FrenchSignUpPage = () => {
+  return <LocalizedSignUpPage locale='fr' />
 }
 
-export default SignUpPage
+export default FrenchSignUpPage

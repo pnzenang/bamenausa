@@ -14,10 +14,21 @@ type MemberDirectoryFilterOption = {
   label: string
 }
 
+export type MemberDirectoryFilterBarLabels = {
+  nameLabel: string
+  searchNamePlaceholder: string
+  clearNameSearch: string
+  quartierLabel: string
+  allQuartiers: string
+  stateLabel: string
+  allStates: string
+}
+
 type MemberDirectoryFilterBarProps = {
   filters: MemberDirectoryFilters
   quartierOptions: MemberDirectoryFilterOption[]
   stateOptions: MemberDirectoryFilterOption[]
+  labels: MemberDirectoryFilterBarLabels
   onFiltersChange: (filters: MemberDirectoryFilters) => void
 }
 
@@ -28,6 +39,7 @@ export const MemberDirectoryFilterBar = ({
   filters,
   quartierOptions,
   stateOptions,
+  labels,
   onFiltersChange
 }: MemberDirectoryFilterBarProps) => {
   const nameId = useId()
@@ -45,7 +57,7 @@ export const MemberDirectoryFilterBar = ({
     <div className='bg-background grid gap-3 rounded-md border p-4 md:grid-cols-[minmax(0,1fr)_220px_220px] md:items-end'>
       <div className='space-y-2'>
         <label htmlFor={nameId} className='block text-sm font-medium'>
-          Name
+          {labels.nameLabel}
         </label>
         <div className='relative'>
           <SearchIcon className='text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2' />
@@ -54,7 +66,7 @@ export const MemberDirectoryFilterBar = ({
             name='name'
             value={filters.name}
             onChange={event => updateFilters({ name: event.target.value })}
-            placeholder='Search name'
+            placeholder={labels.searchNamePlaceholder}
             className='pr-10 pl-9'
           />
           {filters.name && (
@@ -63,7 +75,7 @@ export const MemberDirectoryFilterBar = ({
               variant='ghost'
               size='icon-sm'
               className='absolute top-1/2 right-1 size-7 -translate-y-1/2 rounded-full'
-              aria-label='Clear name search'
+              aria-label={labels.clearNameSearch}
               onClick={() => updateFilters({ name: '' })}
             >
               <XIcon />
@@ -74,7 +86,7 @@ export const MemberDirectoryFilterBar = ({
 
       <div className='space-y-2'>
         <label htmlFor={quartierId} className='block text-sm font-medium'>
-          Quartier
+          {labels.quartierLabel}
         </label>
         <select
           id={quartierId}
@@ -83,7 +95,7 @@ export const MemberDirectoryFilterBar = ({
           className={selectClassName}
           onChange={event => updateFilters({ quartier: event.target.value })}
         >
-          <option value=''>All quartiers</option>
+          <option value=''>{labels.allQuartiers}</option>
           {quartierOptions.map(option => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -94,7 +106,7 @@ export const MemberDirectoryFilterBar = ({
 
       <div className='space-y-2'>
         <label htmlFor={stateId} className='block text-sm font-medium'>
-          State
+          {labels.stateLabel}
         </label>
         <select
           id={stateId}
@@ -103,7 +115,7 @@ export const MemberDirectoryFilterBar = ({
           className={selectClassName}
           onChange={event => updateFilters({ state: event.target.value })}
         >
-          <option value=''>All states</option>
+          <option value=''>{labels.allStates}</option>
           {stateOptions.map(option => (
             <option key={option.value} value={option.value}>
               {option.label}

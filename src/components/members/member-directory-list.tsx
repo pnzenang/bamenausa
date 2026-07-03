@@ -5,7 +5,10 @@ import { useId, useMemo, useState } from 'react'
 import Image from 'next/image'
 import { ChevronLeftIcon, ChevronRightIcon, MailIcon, MapPinIcon, PhoneIcon, UsersRoundIcon } from 'lucide-react'
 
-import { MemberDirectoryFilterBar } from '@/components/members/member-directory-filter-bar'
+import {
+  MemberDirectoryFilterBar,
+  type MemberDirectoryFilterBarLabels
+} from '@/components/members/member-directory-filter-bar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -30,6 +33,57 @@ export type MemberDirectoryListMember = MemberDirectoryMember & {
 type MemberDirectoryListProps = {
   members: MemberDirectoryListMember[]
   variant: 'public' | 'full'
+  labels?: MemberDirectoryListLabels
+}
+
+export type MemberDirectoryListLabels = {
+  filterBar: MemberDirectoryFilterBarLabels
+  directoryTitle: string
+  memberSingularFound: string
+  memberPluralFound: string
+  noProfiles: string
+  noMatches: string
+  membersPerPage: string
+  showing: string
+  of: string
+  previous: string
+  next: string
+  goToPage: string
+  from: string
+  livesIn: string
+  noEmail: string
+  noTelephone: string
+  noQuarter: string
+  noLocation: string
+}
+
+export const defaultMemberDirectoryLabels: MemberDirectoryListLabels = {
+  filterBar: {
+    nameLabel: 'Name',
+    searchNamePlaceholder: 'Search name',
+    clearNameSearch: 'Clear name search',
+    quartierLabel: 'Quartier',
+    allQuartiers: 'All quartiers',
+    stateLabel: 'State',
+    allStates: 'All states'
+  },
+  directoryTitle: 'Directory',
+  memberSingularFound: 'member found',
+  memberPluralFound: 'members found',
+  noProfiles: 'No member profiles saved yet.',
+  noMatches: 'No members match those filters.',
+  membersPerPage: 'Members per page',
+  showing: 'Showing',
+  of: 'of',
+  previous: 'Previous',
+  next: 'Next',
+  goToPage: 'Go to page',
+  from: 'From',
+  livesIn: 'Lives in',
+  noEmail: 'No email on file',
+  noTelephone: 'No telephone on file',
+  noQuarter: 'No quarter on file',
+  noLocation: 'No city/state on file'
 }
 
 const defaultFilters: MemberDirectoryFilters = {
@@ -67,7 +121,7 @@ const MemberLocation = ({ city, state }: { city: string; state: string }) => {
   )
 }
 
-export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListProps) => {
+export const MemberDirectoryList = ({ members, variant, labels = defaultMemberDirectoryLabels }: MemberDirectoryListProps) => {
   const pageSizeId = useId()
   const [filters, setFilters] = useState<MemberDirectoryFilters>(defaultFilters)
   const [pageSize, setPageSize] = useState<number>(pageSizeOptions[1])
@@ -96,7 +150,9 @@ export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListPro
     return filteredMembers.slice(startIndex, startIndex + pageSize)
   }, [activePage, filteredMembers, pageSize])
 
-  const memberCountLabel = `${filteredMembers.length} ${filteredMembers.length === 1 ? 'member' : 'members'} found`
+  const memberCountLabel = `${filteredMembers.length} ${
+    filteredMembers.length === 1 ? labels.memberSingularFound : labels.memberPluralFound
+  }`
 
   const firstMemberIndex = filteredMembers.length === 0 ? 0 : (activePage - 1) * pageSize + 1
   const lastMemberIndex = Math.min(activePage * pageSize, filteredMembers.length)
@@ -118,6 +174,7 @@ export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListPro
         filters={filters}
         quartierOptions={quartierOptions}
         stateOptions={stateOptions}
+        labels={labels.filterBar}
         onFiltersChange={handleFiltersChange}
       />
 
@@ -125,7 +182,7 @@ export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListPro
         <CardHeader className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
           <CardTitle className='flex items-center gap-2'>
             <UsersRoundIcon className='text-primary size-5' />
-            Directory
+            {labels.directoryTitle}
           </CardTitle>
           <Badge variant='outline'>{memberCountLabel}</Badge>
         </CardHeader>
@@ -133,19 +190,19 @@ export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListPro
           {filteredMembers.length === 0 ? (
             <div className='bg-muted/60 rounded-md border px-4 py-10 text-center'>
               <p className='font-medium'>
-                {members.length === 0 ? 'No member profiles saved yet.' : 'No members match those filters.'}
+                {members.length === 0 ? labels.noProfiles : labels.noMatches}
               </p>
             </div>
           ) : variant === 'public' ? (
             <div className='grid gap-4 md:grid-cols-3'>
               {paginatedMembers.map(member => (
-                <PublicMemberCard key={member.clerkUserId} member={member} />
+                <PublicMemberCard key={member.clerkUserId} member={member} labels={labels} />
               ))}
             </div>
           ) : (
             <div className='space-y-4'>
               {paginatedMembers.map(member => (
-                <FullMemberCard key={member.clerkUserId} member={member} />
+                <FullMemberCard key={member.clerkUserId} member={member} labels={labels} />
               ))}
             </div>
           )}
@@ -154,7 +211,7 @@ export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListPro
             <div className='mt-6 flex flex-col gap-4 border-t pt-4 sm:flex-row sm:items-center sm:justify-between'>
               <div className='flex flex-wrap items-center gap-3'>
                 <label htmlFor={pageSizeId} className='text-muted-foreground text-sm'>
-                  Members per page
+                  {labels.membersPerPage}
                 </label>
                 <select
                   id={pageSizeId}
@@ -169,7 +226,7 @@ export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListPro
                   ))}
                 </select>
                 <p className='text-muted-foreground text-sm'>
-                  Showing {firstMemberIndex}-{lastMemberIndex} of {filteredMembers.length}
+                  {labels.showing} {firstMemberIndex}-{lastMemberIndex} {labels.of} {filteredMembers.length}
                 </p>
               </div>
 
@@ -183,7 +240,7 @@ export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListPro
                   onClick={() => setCurrentPage(page => Math.max(1, page - 1))}
                 >
                   <ChevronLeftIcon />
-                  Previous
+                  {labels.previous}
                 </Button>
 
                 {pageNumbers.map(page => (
@@ -193,7 +250,7 @@ export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListPro
                     variant={page === activePage ? 'default' : 'outline'}
                     size='icon-sm'
                     className='rounded-full'
-                    aria-label={`Go to page ${page}`}
+                    aria-label={`${labels.goToPage} ${page}`}
                     aria-current={page === activePage ? 'page' : undefined}
                     onClick={() => setCurrentPage(page)}
                   >
@@ -209,7 +266,7 @@ export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListPro
                   disabled={activePage === totalPages}
                   onClick={() => setCurrentPage(page => Math.min(totalPages, page + 1))}
                 >
-                  Next
+                  {labels.next}
                   <ChevronRightIcon />
                 </Button>
               </div>
@@ -221,7 +278,13 @@ export const MemberDirectoryList = ({ members, variant }: MemberDirectoryListPro
   )
 }
 
-const PublicMemberCard = ({ member }: { member: MemberDirectoryListMember }) => {
+const PublicMemberCard = ({
+  member,
+  labels
+}: {
+  member: MemberDirectoryListMember
+  labels: MemberDirectoryListLabels
+}) => {
   const fullName = getMemberFullName(member)
   const imageUrl = member.imageUrl ?? '/favicon/android-chrome-192x192.png'
   const eulogies = getEulogyLabel(member.eulogyPreference)
@@ -240,10 +303,14 @@ const PublicMemberCard = ({ member }: { member: MemberDirectoryListMember }) => 
             <span className='text-primary font-script text-xl font-normal leading-none sm:text-2xl'>{eulogies}</span>
             <span>{fullName}</span>
           </h2>
-          {quarter && <p className='text-muted-foreground mt-2 text-sm'>From {quarter}</p>}
+          {quarter && (
+            <p className='text-muted-foreground mt-2 text-sm'>
+              {labels.from} {quarter}
+            </p>
+          )}
           {hasLocation && (
             <p className='text-muted-foreground mt-1 text-sm'>
-              Lives in <MemberLocation city={member.cameroonOriginCity} state={state} />
+              {labels.livesIn} <MemberLocation city={member.cameroonOriginCity} state={state} />
             </p>
           )}
         </div>
@@ -252,7 +319,13 @@ const PublicMemberCard = ({ member }: { member: MemberDirectoryListMember }) => 
   )
 }
 
-const FullMemberCard = ({ member }: { member: MemberDirectoryListMember }) => {
+const FullMemberCard = ({
+  member,
+  labels
+}: {
+  member: MemberDirectoryListMember
+  labels: MemberDirectoryListLabels
+}) => {
   const fullName = getMemberFullName(member)
   const imageUrl = member.imageUrl ?? '/favicon/android-chrome-192x192.png'
   const eulogies = getEulogyLabel(member.eulogyPreference)
@@ -275,25 +348,25 @@ const FullMemberCard = ({ member }: { member: MemberDirectoryListMember }) => {
           <div className='grid gap-2 text-sm sm:grid-cols-2'>
             <p className='text-muted-foreground flex items-center gap-2 break-words'>
               <MailIcon className='size-3.5 shrink-0' />
-              {member.email || 'No email on file'}
+              {member.email || labels.noEmail}
             </p>
             <p className='text-muted-foreground flex items-center gap-2 break-words'>
               <PhoneIcon className='size-3.5 shrink-0' />
-              {member.phoneNumber || 'No telephone on file'}
+              {member.phoneNumber || labels.noTelephone}
             </p>
           </div>
         </div>
 
         <div className='space-y-2 text-sm'>
-          <p className='font-medium break-words'>{quarter ? `From ${quarter}` : 'No quarter on file'}</p>
+          <p className='font-medium break-words'>{quarter ? `${labels.from} ${quarter}` : labels.noQuarter}</p>
           <p className='text-muted-foreground flex items-center gap-2 break-words'>
             <MapPinIcon className='size-3.5 shrink-0' />
             {hasLocation ? (
               <>
-                Lives in <MemberLocation city={member.cameroonOriginCity} state={state} />
+                {labels.livesIn} <MemberLocation city={member.cameroonOriginCity} state={state} />
               </>
             ) : (
-              'No city/state on file'
+              labels.noLocation
             )}
           </p>
         </div>

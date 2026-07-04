@@ -389,7 +389,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           title: 'Annual Cultural Gala',
           description:
             'A flagship fundraising celebration for culture, education, and community projects in the DMV and beyond.',
-          blogLink: '#offers'
+          blogLink: '#contact-us'
         },
         {
           img: '/images/culture/gala-2026/bamena-gala-2026-08.jpg',
@@ -716,7 +716,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           title: 'Gala culturel annuel',
           description:
             "Une célébration phare de collecte de fonds pour la culture, l'éducation et les projets communautaires dans la région DMV et au-delà.",
-          blogLink: '#offers'
+          blogLink: '#contact-us'
         },
         {
           img: '/images/culture/gala-2026/bamena-gala-2026-08.jpg',

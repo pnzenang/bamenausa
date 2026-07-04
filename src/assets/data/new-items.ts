@@ -5,7 +5,7 @@ export const initiatives = [
     title: 'Annual Cultural Gala',
     description:
       'A flagship fundraising celebration for culture, education, and community projects in the DMV and beyond.',
-    blogLink: '#offers'
+    blogLink: '#contact-us'
   },
   {
     img: '/images/culture/gala-2026/bamena-gala-2026-08.jpg',

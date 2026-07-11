@@ -13,18 +13,20 @@ const NecrologyPage = ({ locale }: NecrologyPageProps) => {
 
   return (
     <section className='bg-muted/30 min-h-screen px-4 pb-16 pt-32 sm:px-6 lg:px-8'>
-      <div className='mx-auto max-w-5xl space-y-10'>
-        <div className='mx-auto max-w-3xl space-y-4 text-center'>
+      <div className='mx-auto flex min-h-[calc(100vh-12rem)] w-full max-w-7xl flex-col gap-10'>
+        <div className='mx-auto w-full max-w-5xl space-y-4 text-center'>
           <Badge variant='outline'>{content.badge}</Badge>
-          <h1 className='text-3xl font-bold text-balance sm:text-4xl'>{content.title}</h1>
-          <p className='text-muted-foreground text-lg text-balance'>{content.description}</p>
+          <h1 className='text-4xl leading-tight font-bold text-balance sm:text-5xl lg:text-6xl'>{content.title}</h1>
+          <p className='text-muted-foreground mx-auto max-w-3xl text-lg text-balance sm:text-xl'>
+            {content.description}
+          </p>
         </div>
 
-        <div className='bg-background mx-auto max-w-3xl rounded-md border p-6 shadow-sm sm:p-8'>
-          <div className='space-y-3'>
+        <div className='bg-background flex flex-1 items-center justify-center rounded-md border p-6 shadow-sm sm:p-10 lg:p-14'>
+          <div className='mx-auto max-w-4xl space-y-4 text-center'>
             <p className='text-primary text-sm font-semibold'>{content.placeholderEyebrow}</p>
-            <h2 className='text-2xl font-semibold text-balance'>{content.placeholderTitle}</h2>
-            <p className='text-muted-foreground text-base leading-7'>{content.placeholderDescription}</p>
+            <h2 className='text-3xl font-semibold text-balance sm:text-4xl'>{content.placeholderTitle}</h2>
+            <p className='text-muted-foreground text-lg leading-8'>{content.placeholderDescription}</p>
           </div>
         </div>
       </div>

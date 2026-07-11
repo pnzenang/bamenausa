@@ -10,6 +10,8 @@ import {
   UsersRound
 } from 'lucide-react'
 
+import { contactInfo } from './contact-us'
+
 import type { NavigationSection } from '@/components/blocks/menu-navigation'
 import type { Locale } from '@/lib/i18n'
 
@@ -196,10 +198,6 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     navigation: [
       {
-        title: 'Programs',
-        href: '#programs'
-      },
-      {
         title: 'Impact',
         href: '#about-us'
       },
@@ -226,10 +224,6 @@ export const siteContent: Record<Locale, SiteContent> = {
     ],
     footer: {
       navigation: [
-        {
-          title: 'Programs',
-          href: '#programs'
-        },
         {
           title: 'Impact',
           href: '#about-us'
@@ -281,7 +275,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     programs: {
       eyebrow: 'Culture Programs',
-      title: 'Programs that keep heritage alive',
+      title: 'Programs that keep heritage alive.',
       description:
         'Bamena-USA creates practical spaces for learning, service, celebration, and intergenerational connection.',
       items: [
@@ -317,7 +311,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     about: {
       eyebrow: 'About Us',
-      title: 'A nonprofit rooted in culture',
+      title: 'A nonprofit rooted in culture.',
       description:
         'Bamena-USA preserves the stories, values, and traditions of Bamena while building a stronger support system for families, youth, elders, and friends of the community.',
       cta: 'Support the mission',
@@ -378,7 +372,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     initiatives: {
       eyebrow: 'Events & Initiatives',
-      title: 'Gather, learn, and serve together',
+      title: 'Gather, learn, and serve together.',
       description:
         'From the annual gala to youth workshops, each initiative helps culture move from memory into daily life.',
       learnMore: 'Learn more',
@@ -410,39 +404,18 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     contact: {
       eyebrow: 'Contact Us',
-      title: 'Get in touch with us',
+      title: 'Get in touch with us.',
       description:
         'Reach out to volunteer, sponsor a program, ask about the gala, or connect your family with Bamena-USA.',
       imageAlt: 'Bamena-USA volunteers welcoming families with community resources',
-      secondaryTitle: "We're here to build with you",
+      secondaryTitle: "We're here to build with you.",
       secondaryDescription:
         'Whether you want to donate, volunteer, partner, or learn more about our programs, the Bamena-USA team would love to hear from you.',
-      items: [
-        {
-          title: 'DMV Monthly Meeting',
-          icon: Clock8Icon,
-          description: 'Third Saturday of the month\n7:00 pm to 9:00 pm'
-        },
-        {
-          title: 'Service Area',
-          icon: MapPinIcon,
-          description: 'DMV Area\nUnited States'
-        },
-        {
-          title: 'Email',
-          icon: Mail,
-          description: 'codemenousa@gmail.com'
-        },
-        {
-          title: 'Volunteer Line',
-          icon: PhoneIcon,
-          description: 'Coming soon\nBoard contact'
-        }
-      ]
+      items: contactInfo
     },
     giving: {
       eyebrow: 'Donate',
-      title: 'Fuel culture with generosity',
+      title: 'Fuel culture with generosity.',
       description:
         'Your support helps fund cultural education, youth mentorship, community care, and gatherings that keep Bamena heritage visible and shared.',
       images: [
@@ -519,10 +492,6 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     navigation: [
       {
-        title: 'Programmes',
-        href: '#programs'
-      },
-      {
         title: 'Impact',
         href: '#about-us'
       },
@@ -549,10 +518,6 @@ export const siteContent: Record<Locale, SiteContent> = {
     ],
     footer: {
       navigation: [
-        {
-          title: 'Programmes',
-          href: '#programs'
-        },
         {
           title: 'Impact',
           href: '#about-us'
@@ -605,7 +570,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     programs: {
       eyebrow: 'Programmes culturels',
-      title: "Des programmes qui gardent l'héritage vivant",
+      title: "Des programmes qui gardent l'héritage vivant.",
       description:
         'Bamena-USA crée des espaces concrets pour apprendre, servir, célébrer et renforcer les liens entre générations.',
       items: [
@@ -643,7 +608,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     about: {
       eyebrow: 'À propos',
-      title: 'Une association enracinée dans la culture',
+      title: 'Une association enracinée dans la culture.',
       description:
         'Bamena-USA préserve les récits, les valeurs et les traditions de Bamena tout en renforçant un réseau de soutien pour les familles, les jeunes, les aînés et les amis de la communauté.',
       cta: 'Soutenir la mission',
@@ -705,7 +670,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     initiatives: {
       eyebrow: 'Événements et initiatives',
-      title: 'Se réunir, apprendre et servir ensemble',
+      title: 'Se réunir, apprendre et servir ensemble.',
       description:
         'Du gala annuel aux ateliers jeunesse, chaque initiative aide la culture à passer de la mémoire à la vie quotidienne.',
       learnMore: 'En savoir plus',
@@ -738,23 +703,23 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     contact: {
       eyebrow: 'Contact',
-      title: 'Entrer en contact avec nous',
+      title: 'Entrer en contact avec nous.',
       description:
         'Contactez-nous pour faire du bénévolat, parrainer un programme, poser une question sur le gala ou connecter votre famille à Bamena-USA.',
       imageAlt: 'Bénévoles de Bamena-USA accueillant les familles avec des ressources communautaires',
-      secondaryTitle: 'Nous sommes là pour bâtir avec vous',
+      secondaryTitle: 'Nous sommes là pour bâtir avec vous.',
       secondaryDescription:
         "Que vous souhaitiez faire un don, devenir bénévole, créer un partenariat ou en apprendre davantage sur nos programmes, l'équipe Bamena-USA sera heureuse de vous lire.",
       items: [
         {
           title: 'Réunion mensuelle DMV',
           icon: Clock8Icon,
-          description: 'Troisième samedi du mois\n19 h 00 à 21 h 00'
+          description: 'Troisième samedi du mois.\n19 h 00 à 21 h 00'
         },
         {
-          title: 'Zone de service',
+          title: 'Région DMV',
           icon: MapPinIcon,
-          description: 'Région DMV\nÉtats-Unis'
+          description: '5020 Sunnyside Ave\nBeltsville, MD 20705'
         },
         {
           title: 'Email',
@@ -764,13 +729,13 @@ export const siteContent: Record<Locale, SiteContent> = {
         {
           title: 'Ligne bénévolat',
           icon: PhoneIcon,
-          description: 'Bientôt disponible\nContact du conseil'
+          description: 'Bientôt disponible.\nContact du conseil.'
         }
       ]
     },
     giving: {
       eyebrow: 'Don',
-      title: 'Nourrir la culture par la générosité',
+      title: 'Nourrir la culture par la générosité.',
       description:
         "Votre soutien finance l'éducation culturelle, le mentorat des jeunes, l'entraide communautaire et les rassemblements qui gardent l'héritage Bamena visible et partagé.",
       images: [

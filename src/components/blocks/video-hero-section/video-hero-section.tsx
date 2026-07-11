@@ -43,15 +43,46 @@ const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
         <div className='flex min-h-[760px] flex-col justify-center gap-10 py-16 text-center text-white sm:min-h-[700px] lg:min-h-[720px] lg:text-left'>
           <div className='mx-auto grid w-full max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(280px,1fr)]'>
             <div className='mx-auto max-w-4xl lg:mx-0'>
-              <MotionPreset fade slide={{ offset: 50 }} blur transition={{ duration: 0.5 }} delay={0.2}>
+              <MotionPreset
+                fade
+                slide={{ direction: 'up', offset: 24 }}
+                blur
+                transition={{ duration: 0.5 }}
+                delay={0.2}
+              >
                 <p className='mb-4 text-sm font-semibold tracking-normal text-white/75 uppercase'>{copy.eyebrow}</p>
                 <h1 className='text-4xl leading-tight font-bold text-balance sm:text-5xl lg:text-6xl'>{copy.title}</h1>
               </MotionPreset>
-              <MotionPreset fade slide={{ offset: 50 }} blur transition={{ duration: 0.5 }} delay={0.35}>
-                <p className='mx-auto mt-5 max-w-3xl text-base leading-7 text-white/80 sm:text-lg lg:mx-0'>{copy.description}</p>
+              <MotionPreset
+                fade
+                slide={{ direction: 'up', offset: 24 }}
+                blur
+                transition={{ duration: 0.5 }}
+                delay={0.35}
+              >
+                <p className='mx-auto mt-5 max-w-3xl text-base leading-7 text-white/80 sm:text-lg lg:mx-0'>
+                  {copy.description}
+                </p>
               </MotionPreset>
-              <MotionPreset fade slide={{ offset: 50 }} blur transition={{ duration: 0.5 }} delay={0.5}>
+              <MotionPreset
+                fade
+                slide={{ direction: 'up', offset: 24 }}
+                blur
+                transition={{ duration: 0.5 }}
+                delay={0.5}
+              >
                 <div className='mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap lg:justify-start'>
+                  <Button
+                    size='lg'
+                    variant='secondary'
+                    asChild
+                    className='group w-fit rounded-full bg-teal-600 text-base text-white hover:bg-teal-700 hover:text-white has-[>svg]:px-6'
+                  >
+                    <Link href={localizedSignUpPath}>
+                      {copy.joinCta}
+                      <UserPlusIcon />
+                    </Link>
+                  </Button>
                   <Button
                     size='lg'
                     asChild
@@ -66,17 +97,6 @@ const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
                     >
                       {copy.donateCta}
                       <HeartHandshakeIcon />
-                    </Link>
-                  </Button>
-                  <Button
-                    size='lg'
-                    variant='secondary'
-                    asChild
-                    className='group w-fit rounded-full bg-white/90 text-base text-slate-950 hover:bg-white has-[>svg]:px-6'
-                  >
-                    <Link href={localizedSignUpPath}>
-                      {copy.joinCta}
-                      <UserPlusIcon />
                     </Link>
                   </Button>
                   <Button
@@ -100,7 +120,7 @@ const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
               </MotionPreset>
             </div>
 
-            <MotionPreset fade slide={{ offset: 50 }} blur transition={{ duration: 0.5 }} delay={0.65}>
+            <MotionPreset fade slide={{ direction: 'up', offset: 24 }} blur transition={{ duration: 0.5 }} delay={0.65}>
               <div className='mx-auto w-full max-w-2xl space-y-4 rounded-md border border-white/20 bg-black/25 p-5 text-white shadow-2xl backdrop-blur-sm lg:mx-0'>
                 <p className='text-sm font-semibold tracking-normal text-white/70 uppercase'>{copy.missionEyebrow}</p>
                 <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-1'>

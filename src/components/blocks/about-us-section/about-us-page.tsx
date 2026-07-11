@@ -25,12 +25,14 @@ const AboutUs = ({ stats, copy }: AboutUsProps) => {
     >
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         {/* Header */}
-        <div className='mx-auto mb-12 flex max-w-3xl flex-col items-center justify-center space-y-4 text-center md:mb-16 lg:mb-24'>
+        <div className='mx-auto mb-12 flex max-w-6xl flex-col items-center justify-center space-y-4 text-center md:mb-16 lg:mb-24'>
           <Badge variant='outline' className='text-sm font-normal'>
             {copy.eyebrow}
           </Badge>
-          <h2 className='text-2xl font-semibold tracking-tight md:text-3xl lg:text-4xl'>{copy.title}</h2>
-          <p className='text-muted-foreground text-xl'>{copy.description}</p>
+          <h2 className='text-3xl leading-tight font-semibold text-balance tracking-tight md:text-4xl lg:text-5xl xl:whitespace-nowrap'>
+            {copy.title}
+          </h2>
+          <p className='text-muted-foreground max-w-3xl text-xl'>{copy.description}</p>
           <Button
             size='lg'
             asChild

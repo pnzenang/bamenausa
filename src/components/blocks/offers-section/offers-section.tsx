@@ -38,9 +38,11 @@ const Gallery = ({ galleryImage, copy }: GalleryProps) => {
             {copy.eyebrow}
           </Badge>
 
-          <h2 className='text-2xl font-semibold md:text-3xl lg:text-4xl'>{copy.title}</h2>
+          <h2 className='text-3xl leading-tight font-semibold text-balance md:text-4xl lg:text-5xl xl:whitespace-nowrap'>
+            {copy.title}
+          </h2>
 
-          <p className='text-muted-foreground text-xl'>{copy.description}</p>
+          <p className='text-muted-foreground mx-auto max-w-2xl text-xl'>{copy.description}</p>
         </div>
 
         {/* Gallery Grid */}
@@ -69,8 +71,6 @@ const Gallery = ({ galleryImage, copy }: GalleryProps) => {
                   className='absolute inset-0 h-full w-full object-cover object-[center_40%] transition-transform duration-300 hover:scale-105'
                 />
               )}
-              <div className='absolute inset-0 bg-linear-to-t from-black/70 via-black/25 to-transparent' />
-
               {image.offerText && (
                 <div className={cn('absolute', image.offerText.className)}>
                   <p className='font-(family-name:--font-kaushan-script) text-lg text-white md:text-xl lg:text-2xl xl:text-3xl'>

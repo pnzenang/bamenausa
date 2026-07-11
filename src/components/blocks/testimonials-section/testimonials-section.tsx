@@ -32,14 +32,13 @@ const TestimonialsComponent = ({ testimonials, copy }: TestimonialsComponentProp
         }}
       >
         {/* Left Content */}
-        <div className='space-y-4 sm:w-1/2 lg:w-1/3'>
+        <div className='space-y-4 sm:w-1/2'>
           <Badge variant='outline' className='text-sm font-normal'>
             {copy.eyebrow}
           </Badge>
 
-          <h2 className='text-2xl font-semibold sm:text-3xl lg:text-4xl'>
-            {copy.titleLines[0]} <br />
-            {copy.titleLines[1]}
+          <h2 className='text-3xl leading-tight font-semibold text-balance sm:text-4xl lg:text-5xl xl:whitespace-nowrap'>
+            {copy.titleLines[0]} {copy.titleLines[1]}
           </h2>
 
           <p className='text-muted-foreground text-xl'>{copy.description}</p>
@@ -57,7 +56,7 @@ const TestimonialsComponent = ({ testimonials, copy }: TestimonialsComponentProp
         </div>
 
         {/* Right Testimonial Carousel */}
-        <div className='relative max-w-196 sm:w-1/2 lg:w-2/3'>
+        <div className='relative max-w-196 sm:w-1/2'>
           <CarouselContent className='sm:-ml-6'>
             {testimonials.map((testimonial, index) => (
               <CarouselItem key={index} className='sm:pl-6 lg:basis-1/2'>

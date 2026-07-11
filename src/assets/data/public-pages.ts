@@ -48,7 +48,7 @@ export const publicPageContent: Record<
         description: 'Browse public Bamena-USA member profiles.'
       },
       badge: 'Members',
-      title: 'Bamena-USA Members',
+      title: 'Bamena-USA Members.',
       unavailableMessage: 'The member directory is temporarily unavailable.',
       loadingLabel: 'Loading members',
       directoryLabels: {
@@ -85,7 +85,7 @@ export const publicPageContent: Record<
         title: 'Gallery',
         description: 'Bamena-USA community photo gallery.'
       },
-      title: 'Bamena-USA Gallery',
+      title: 'Bamena-USA Gallery.',
       description: 'Bamena-USA was unveiling their new uniform.',
       imageAltPrefix: 'Bamena-USA gallery photo'
     },
@@ -95,9 +95,9 @@ export const publicPageContent: Record<
         description: 'A forthcoming Bamena-USA memorial page honoring departed community members.'
       },
       badge: 'Necrology',
-      title: 'Bamena-USA Necrology',
+      title: 'Bamena-USA Necrology.',
       description: 'A dedicated place to remember and honor departed members of the Bamena-USA community.',
-      placeholderEyebrow: 'Coming soon',
+      placeholderEyebrow: 'Coming soon.',
       placeholderTitle: 'Memorial listings will appear here.',
       placeholderDescription:
         'This page is being prepared as a respectful space for community remembrance. Please check back soon for updates.'
@@ -110,7 +110,7 @@ export const publicPageContent: Record<
         description: 'Consultez les profils publics des membres de Bamena-USA.'
       },
       badge: 'Membres',
-      title: 'Membres Bamena-USA',
+      title: 'Membres Bamena-USA.',
       unavailableMessage: 'Le répertoire des membres est temporairement indisponible.',
       loadingLabel: 'Chargement des membres',
       directoryLabels: {
@@ -147,7 +147,7 @@ export const publicPageContent: Record<
         title: 'Galerie',
         description: 'Galerie photo de la communauté Bamena-USA.'
       },
-      title: 'Galerie Bamena-USA',
+      title: 'Galerie Bamena-USA.',
       description: 'Bamena-USA dévoilait son nouvel uniforme.',
       imageAltPrefix: 'Photo de la galerie Bamena-USA'
     },
@@ -157,9 +157,9 @@ export const publicPageContent: Record<
         description: 'Une page commémorative Bamena-USA à venir pour honorer les membres disparus.'
       },
       badge: 'Nécrologie',
-      title: 'Nécrologie Bamena-USA',
+      title: 'Nécrologie Bamena-USA.',
       description: 'Un espace dédié pour se souvenir des membres disparus de la communauté Bamena-USA.',
-      placeholderEyebrow: 'Bientôt disponible',
+      placeholderEyebrow: 'Bientôt disponible.',
       placeholderTitle: 'Les hommages commémoratifs apparaîtront ici.',
       placeholderDescription:
         'Cette page est en préparation comme espace respectueux de mémoire communautaire. Revenez bientôt pour les mises à jour.'

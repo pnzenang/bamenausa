@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { ChevronDownIcon, FileTextIcon } from 'lucide-react'
+import { ChevronDownIcon, FileTextIcon, PrinterIcon } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -20,6 +20,8 @@ type MarylandMeetingMinutesViewerProps = {
   isPublished: boolean
   minutesTitle: string
   onePageViewLabel: string
+  printPdfAriaLabel: string
+  printPdfLabel: string
   publishedLabel: string
   viewModeLabel: string
 }
@@ -32,14 +34,35 @@ const MarylandMeetingMinutesViewer = ({
   isPublished,
   minutesTitle,
   onePageViewLabel,
+  printPdfAriaLabel,
+  printPdfLabel,
   publishedLabel,
   viewModeLabel
 }: MarylandMeetingMinutesViewerProps) => {
   const [viewMode, setViewMode] = useState<MeetingMinutesViewMode>('accordion')
+  const [shouldPrint, setShouldPrint] = useState(false)
   const hasAgendaDetailsLabel = agendaDetailsLabel.trim().length > 0
 
+  useEffect(() => {
+    if (!shouldPrint) return
+
+    const printTimer = window.setTimeout(() => {
+      window.print()
+      setShouldPrint(false)
+    }, 0)
+
+    return () => {
+      window.clearTimeout(printTimer)
+    }
+  }, [shouldPrint, viewMode])
+
+  const handlePrintPdf = () => {
+    setViewMode('page')
+    setShouldPrint(true)
+  }
+
   return (
-    <Card className='rounded-md'>
+    <Card className='print-card rounded-md'>
       <CardHeader>
         <div className='flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between'>
           <div className='flex flex-wrap items-center gap-2'>
@@ -49,7 +72,20 @@ const MarylandMeetingMinutesViewer = ({
             </CardTitle>
             {isPublished && <Badge variant='outline'>{publishedLabel}</Badge>}
           </div>
-          <div className='flex w-full flex-wrap gap-2 sm:w-auto' role='group' aria-label={viewModeLabel}>
+          <div className='print-hide flex w-full flex-wrap gap-2 sm:w-auto' role='group' aria-label={viewModeLabel}>
+            {isPublished && (
+              <Button
+                type='button'
+                size='sm'
+                variant='outline'
+                className='rounded-full'
+                aria-label={printPdfAriaLabel}
+                onClick={handlePrintPdf}
+              >
+                <PrinterIcon />
+                {printPdfLabel}
+              </Button>
+            )}
             <Button
               type='button'
               size='sm'
@@ -78,9 +114,9 @@ const MarylandMeetingMinutesViewer = ({
       <CardContent>
         {agendaItems.length > 0 ? (
           viewMode === 'page' ? (
-            <div className='divide-y rounded-md border'>
+            <div className='print-divide divide-y rounded-md border'>
               {agendaItems.map((item, index) => (
-                <section key={`${item.title}-${index}`} className='space-y-2 px-4 py-4'>
+                <section key={`${item.title}-${index}`} className='print-no-break space-y-2 px-4 py-4'>
                   <h3 className='font-medium leading-7'>{item.title}</h3>
                   <p className='text-muted-foreground text-sm leading-6'>
                     {hasAgendaDetailsLabel && (

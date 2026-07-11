@@ -1,23 +1,20 @@
-import { Suspense } from 'react'
-
 import type { Metadata } from 'next'
 
 import { MemberDirectoryList, type MemberDirectoryListMember } from '@/components/members/member-directory-list'
-import { MemberDirectorySkeleton } from '@/components/members/member-directory-skeleton'
 import { Badge } from '@/components/ui/badge'
 
-import { listMemberProfiles } from '@/lib/member-profiles'
+import { listMemberProfilesWithTimeout } from '@/lib/member-profiles'
 
 export const metadata: Metadata = {
   title: 'Full Members List'
 }
 
 const FullMembersDirectory = async () => {
-  let members: Awaited<ReturnType<typeof listMemberProfiles>> = []
+  let members: Awaited<ReturnType<typeof listMemberProfilesWithTimeout>> = []
   let membersError = false
 
   try {
-    members = await listMemberProfiles()
+    members = await listMemberProfilesWithTimeout()
   } catch {
     membersError = true
   }
@@ -50,15 +47,13 @@ const FullMembersDirectory = async () => {
 
 const FullMembersPage = () => {
   return (
-    <div className='mx-auto max-w-6xl space-y-8'>
+    <div className='mx-auto max-w-7xl space-y-8'>
       <div className='space-y-3'>
         <Badge variant='outline'>Members</Badge>
         <h1 className='text-3xl font-bold text-balance sm:text-4xl'>Full Members List</h1>
       </div>
 
-      <Suspense fallback={<MemberDirectorySkeleton variant='full' />}>
-        <FullMembersDirectory />
-      </Suspense>
+      <FullMembersDirectory />
     </div>
   )
 }

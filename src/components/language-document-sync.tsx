@@ -4,15 +4,27 @@ import { useEffect } from 'react'
 
 import { usePathname } from 'next/navigation'
 
-import { getLocaleFromPathname } from '@/lib/i18n'
+import {
+  getLocaleFromPathnameOrPreference,
+  getLocalePreferenceCookie,
+  getLocalePreferenceFromCookieHeader,
+  getLocalePreferenceFromPathname
+} from '@/lib/i18n'
 
 const LanguageDocumentSync = () => {
   const pathname = usePathname()
-  const locale = getLocaleFromPathname(pathname)
 
   useEffect(() => {
+    const pathLocalePreference = getLocalePreferenceFromPathname(pathname)
+    const savedLocalePreference = getLocalePreferenceFromCookieHeader(document.cookie)
+    const locale = getLocaleFromPathnameOrPreference(pathname, savedLocalePreference)
+
     document.documentElement.lang = locale
-  }, [locale])
+
+    if (pathLocalePreference) {
+      document.cookie = getLocalePreferenceCookie(pathLocalePreference)
+    }
+  }, [pathname])
 
   return null
 }

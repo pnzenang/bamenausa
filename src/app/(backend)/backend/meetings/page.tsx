@@ -2,22 +2,29 @@ import Link from 'next/link'
 
 import { Edit3Icon, ExternalLinkIcon, FileTextIcon } from 'lucide-react'
 
+import MarylandMeetingWhatsAppAlertMenu from '@/components/backend/maryland-meeting-whatsapp-alert-menu'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
+import { getLocalizedHref } from '@/lib/i18n'
 import { listMarylandMeetingMinutes } from '@/lib/maryland-meeting-minutes'
 import { getMarylandMeetingDateSlug, marylandMeetingDates } from '@/lib/maryland-meetings'
+import { getRequestLocalePreference } from '@/lib/server-i18n'
+import { getMarylandMeetingWhatsAppAlertLinks } from '@/lib/whatsapp-alerts'
 
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-  day: 'numeric',
-  month: 'long',
-  timeZone: 'UTC',
-  weekday: 'long',
-  year: 'numeric'
-})
+const getDateFormatter = (localePreference: Awaited<ReturnType<typeof getRequestLocalePreference>>) =>
+  new Intl.DateTimeFormat(localePreference === 'fr' ? 'fr-FR' : 'en-US', {
+    day: 'numeric',
+    month: 'long',
+    timeZone: 'UTC',
+    weekday: 'long',
+    year: 'numeric'
+  })
 
 const BackendMeetingsPage = async () => {
+  const localePreference = await getRequestLocalePreference()
+  const dateFormatter = getDateFormatter(localePreference)
   let savedMinutes: Awaited<ReturnType<typeof listMarylandMeetingMinutes>> = []
   let minutesError = false
 
@@ -58,23 +65,24 @@ const BackendMeetingsPage = async () => {
             {marylandMeetingDates.map(date => {
               const dateSlug = getMarylandMeetingDateSlug(date)
               const saved = savedMinutesByDate.get(dateSlug)
+              const whatsAppAlerts = getMarylandMeetingWhatsAppAlertLinks(date)
+
+              const publicMinutesHref = getLocalizedHref(
+                `/meetings/maryland/minutes/${dateSlug}${saved ? `?published=${saved.updatedAt.getTime()}` : ''}`,
+                localePreference
+              )
 
               return (
-                <div
-                  key={dateSlug}
-                  className='grid gap-3 p-4 md:grid-cols-[minmax(0,1fr)_150px_220px] md:items-center'
-                >
+                <div key={dateSlug} className='grid gap-3 p-4 md:grid-cols-[minmax(0,1fr)_150px_340px] md:items-center'>
                   <div>
                     <p className='font-medium'>{dateFormatter.format(date)}</p>
                     <p className='text-muted-foreground mt-1 text-sm'>Maryland meeting</p>
                   </div>
                   <Badge variant={saved ? 'default' : 'outline'}>{saved ? 'Published' : 'Not edited'}</Badge>
                   <div className='flex flex-wrap gap-2 md:justify-end'>
+                    <MarylandMeetingWhatsAppAlertMenu alerts={whatsAppAlerts} className='rounded-full' />
                     <Button variant='outline' size='sm' className='rounded-full' asChild>
-                      <Link
-                        href={`/meetings/maryland/minutes/${dateSlug}${saved ? `?published=${saved.updatedAt.getTime()}` : ''}`}
-                        prefetch={false}
-                      >
+                      <Link href={publicMinutesHref} prefetch={false}>
                         <ExternalLinkIcon />
                         View
                       </Link>

@@ -485,7 +485,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       loginCta: 'Connexion',
       loginTooltip: 'Connexion',
       menuLabel: 'Menu',
-      languageToggleLabel: 'View the site in English',
+      languageToggleLabel: 'Voir le site en anglais',
       languageToggleText: 'EN'
     },
     navigation: [
@@ -578,7 +578,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           image: '/images/realization/Louh.jpg',
           alt: "Projet de château d'eau Bamena-USA à Louh",
           name: 'Louh',
-          type: 'Water Project',
+          type: "Projet d'eau",
           description:
             "Aider les familles à bénéficier de systèmes d'eau plus sûrs, construits, entretenus et renforcés par le soutien communautaire."
         },
@@ -586,7 +586,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           image: '/images/realization/Pouzouh.jpg',
           alt: "Projet de château d'eau Bamena-USA à Pouzouh",
           name: 'Pouzouh',
-          type: 'Water Project',
+          type: "Projet d'eau",
           description:
             "Investir dans l'accès à l'eau afin d'aider les communautés à stocker, protéger et partager une ressource locale fiable."
         },
@@ -594,7 +594,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           image: '/images/realization/FopLouh.jpg',
           alt: "Projet d'infrastructure d'eau Bamena-USA achevé à Fop Louh",
           name: 'FopLouh',
-          type: 'Water Project',
+          type: "Projet d'eau",
           description:
             "Transformer la générosité communautaire en infrastructures d'eau concrètes qui soutiennent la vie quotidienne pendant des années."
         }

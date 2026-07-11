@@ -92,6 +92,8 @@ const MarylandMeetingMinutesRoutePage = async ({ params }: MarylandMeetingMinute
       meetingDate={meetingDate}
       publishedAgendaTitles={publishedMinutes?.agendaTitles}
       publishedAgendaDetails={publishedMinutes?.agendaDetails}
+      translatedAgendaTitles={publishedMinutes?.translatedAgendaTitles}
+      translatedAgendaDetails={publishedMinutes?.translatedAgendaDetails}
       publishedAt={publishedMinutes?.updatedAt}
     />
   )

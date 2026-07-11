@@ -22,7 +22,7 @@ const marylandMeetingsContent = {
   en: {
     backHref: '/meetings',
     backLabel: 'Back to meetings',
-    badge: 'Maryland',
+    badge: 'DC/MD/VA',
     title: 'Maryland Meetings',
     description: 'Meeting information for the Maryland Bamena-USA community.',
     scheduleTitle: 'Schedule',
@@ -39,7 +39,7 @@ const marylandMeetingsContent = {
   fr: {
     backHref: '/fr/meetings',
     backLabel: 'Retour aux réunions',
-    badge: 'Maryland',
+    badge: 'DC/MD/VA',
     title: 'Réunions du Maryland',
     description: 'Informations de réunion pour la communauté Bamena-USA du Maryland.',
     scheduleTitle: 'Horaire',

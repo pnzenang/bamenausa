@@ -190,3 +190,67 @@
     @apply cursor-pointer!;
   }
 }
+
+@media print {
+  @page {
+    margin: 0.5in;
+    size: letter;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #111827 !important;
+    overflow: visible !important;
+  }
+
+  header,
+  footer,
+  .print-hide {
+    display: none !important;
+  }
+
+  .print-page {
+    background: #fff !important;
+    min-height: auto !important;
+    padding: 0 !important;
+  }
+
+  .print-document {
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  .print-meeting-grid {
+    display: block !important;
+  }
+
+  .print-meeting-grid > * + * {
+    margin-top: 1rem !important;
+  }
+
+  .print-card {
+    background: #fff !important;
+    border: 1px solid #d4d4d8 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-card * {
+    color: #111827 !important;
+  }
+
+  .print-card svg {
+    display: none !important;
+  }
+
+  .print-divide > * {
+    border-color: #d4d4d8 !important;
+  }
+
+  .print-no-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

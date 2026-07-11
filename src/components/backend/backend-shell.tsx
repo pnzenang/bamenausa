@@ -22,12 +22,14 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 
 import { profilePath } from '@/lib/auth'
+import { getLocaleHomeHref, type Locale } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
 import BamenaLogo from '@/assets/svg/bamena-logo'
 
 type BackendShellProps = {
   children: ReactNode
+  localePreference: Locale
 }
 
 const backendNavigation = [
@@ -63,8 +65,9 @@ const backendNavigation = [
   }
 ]
 
-const BackendShell = ({ children }: BackendShellProps) => {
+const BackendShell = ({ children, localePreference }: BackendShellProps) => {
   const pathname = usePathname()
+  const publicSiteHref = getLocaleHomeHref(localePreference)
 
   return (
     <div className='bg-muted/30 text-foreground min-h-screen'>
@@ -105,7 +108,7 @@ const BackendShell = ({ children }: BackendShellProps) => {
             </Link>
           </Button>
           <Button variant='outline' className='w-full justify-start' asChild>
-            <Link href='/'>
+            <Link href={publicSiteHref}>
               <LogOutIcon />
               Public site
             </Link>

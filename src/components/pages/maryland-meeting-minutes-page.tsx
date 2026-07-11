@@ -16,6 +16,8 @@ type MarylandMeetingMinutesPageProps = {
   meetingDate: Date
   publishedAgendaTitles?: string[]
   publishedAgendaDetails?: string[]
+  translatedAgendaTitles?: string[]
+  translatedAgendaDetails?: string[]
   publishedAt?: Date
 }
 
@@ -23,7 +25,7 @@ const marylandMeetingMinutesContent = {
   en: {
     backHref: '/meetings/maryland#schedule',
     backLabel: 'Back to Maryland meetings',
-    badge: 'Maryland',
+    badge: 'DC/MD/VA',
     title: 'Maryland Meeting',
     descriptionPrefix: 'Meeting for',
     detailsTitle: 'Meeting information',
@@ -39,12 +41,14 @@ const marylandMeetingMinutesContent = {
     emptyMinutesLabel: 'Nothing has been published yet.',
     viewModeLabel: 'View mode',
     onePageViewLabel: 'One page',
-    accordionViewLabel: 'Accordion'
+    accordionViewLabel: 'Accordion',
+    printPdfLabel: 'Print PDF',
+    printPdfAriaLabel: 'Print or save these meeting minutes as a PDF'
   },
   fr: {
     backHref: '/fr/meetings/maryland#schedule',
     backLabel: 'Retour aux réunions du Maryland',
-    badge: 'Maryland',
+    badge: 'DC/MD/VA',
     title: 'Réunion du Maryland',
     descriptionPrefix: 'Réunion du',
     detailsTitle: 'Informations de la réunion',
@@ -60,7 +64,9 @@ const marylandMeetingMinutesContent = {
     emptyMinutesLabel: "Rien n'a encore été publié.",
     viewModeLabel: 'Affichage',
     onePageViewLabel: 'Une page',
-    accordionViewLabel: 'Accordéon'
+    accordionViewLabel: 'Accordéon',
+    printPdfLabel: 'Imprimer en PDF',
+    printPdfAriaLabel: 'Imprimer ou enregistrer ce compte rendu en PDF'
   }
 } as const
 
@@ -69,10 +75,19 @@ const MarylandMeetingMinutesPage = ({
   meetingDate,
   publishedAgendaTitles,
   publishedAgendaDetails,
+  translatedAgendaTitles,
+  translatedAgendaDetails,
   publishedAt
 }: MarylandMeetingMinutesPageProps) => {
   const content = marylandMeetingMinutesContent[locale]
-  const agendaItems = getMarylandMeetingAgendaItems(locale, publishedAgendaTitles, publishedAgendaDetails)
+
+  const agendaItems = getMarylandMeetingAgendaItems(
+    locale,
+    publishedAgendaTitles,
+    publishedAgendaDetails,
+    translatedAgendaTitles,
+    translatedAgendaDetails
+  )
 
   const dateFormatter = new Intl.DateTimeFormat(locale === 'fr' ? 'fr-FR' : 'en-US', {
     day: 'numeric',
@@ -84,10 +99,10 @@ const MarylandMeetingMinutesPage = ({
   const formattedDate = dateFormatter.format(meetingDate)
 
   return (
-    <section className='bg-muted/30 min-h-screen px-4 pb-16 pt-32 sm:px-6 lg:px-8'>
-      <div className='mx-auto max-w-6xl space-y-8'>
+    <section className='print-page bg-muted/30 min-h-screen px-4 pb-16 pt-32 sm:px-6 lg:px-8'>
+      <div className='print-document mx-auto max-w-6xl space-y-8'>
         <div className='space-y-5'>
-          <Button variant='outline' className='rounded-full' asChild>
+          <Button variant='outline' className='print-hide rounded-full' asChild>
             <Link href={content.backHref}>
               <ArrowLeftIcon />
               {content.backLabel}
@@ -103,8 +118,8 @@ const MarylandMeetingMinutesPage = ({
           </div>
         </div>
 
-        <div className='grid gap-4 md:grid-cols-[0.85fr_1.15fr]'>
-          <Card className='rounded-md'>
+        <div className='print-meeting-grid grid gap-4 md:grid-cols-[0.85fr_1.15fr]'>
+          <Card className='print-card rounded-md'>
             <CardHeader>
               <CardTitle className='flex items-center gap-2'>
                 <CalendarDaysIcon className='text-primary size-5' />
@@ -160,6 +175,8 @@ const MarylandMeetingMinutesPage = ({
             isPublished={Boolean(publishedAt)}
             minutesTitle={content.minutesTitle}
             onePageViewLabel={content.onePageViewLabel}
+            printPdfAriaLabel={content.printPdfAriaLabel}
+            printPdfLabel={content.printPdfLabel}
             publishedLabel={content.publishedLabel}
             viewModeLabel={content.viewModeLabel}
           />

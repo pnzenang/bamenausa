@@ -1,4 +1,5 @@
 import { getSql } from '@/lib/neon'
+import { translateTextsToFrench, type AutomaticTranslationStatus } from '@/lib/automatic-translation'
 
 import type { Locale } from '@/lib/i18n'
 
@@ -6,6 +7,8 @@ type MarylandMeetingMinutesRow = {
   date_slug: string
   agenda_titles: unknown
   agenda_details: unknown
+  translated_agenda_titles: unknown
+  translated_agenda_details: unknown
   created_at: Date | string
   updated_at: Date | string
 }
@@ -19,8 +22,15 @@ export type MarylandMeetingMinutes = {
   dateSlug: string
   agendaTitles: string[]
   agendaDetails: string[]
+  translatedAgendaTitles: string[]
+  translatedAgendaDetails: string[]
   createdAt: Date
   updatedAt: Date
+}
+
+export type SaveMarylandMeetingMinutesResult = {
+  minutes: MarylandMeetingMinutes
+  translationStatus: AutomaticTranslationStatus
 }
 
 export type MarylandMeetingAgendaDisplayItem = {
@@ -85,9 +95,9 @@ export const marylandMeetingAgendaByLocale: Record<Locale, MarylandMeetingAgenda
       defaultDetails: 'Les condoléances, les décisions de soutien et les actions communautaires liées sont notées ici.'
     },
     {
-      title: '(6)-Auto critique sur le Fund Raising de mai 2026.',
+      title: '(6)-Auto critique sur la collecte de fonds de mai 2026.',
       defaultDetails:
-        'Les remarques, les leçons apprises et les prochaines étapes du Fund Raising de mai 2026 sont notées ici.'
+        'Les remarques, les leçons apprises et les prochaines étapes de la collecte de fonds de mai 2026 sont notées ici.'
     },
     {
       title: '(7)-Finances.',
@@ -121,6 +131,16 @@ const ensureMarylandMeetingMinutesTable = async () => {
       await getSql()`
         ALTER TABLE maryland_meeting_minutes
         ADD COLUMN IF NOT EXISTS agenda_titles JSONB NOT NULL DEFAULT '[]'::jsonb
+      `
+
+      await getSql()`
+        ALTER TABLE maryland_meeting_minutes
+        ADD COLUMN IF NOT EXISTS translated_agenda_titles JSONB NOT NULL DEFAULT '[]'::jsonb
+      `
+
+      await getSql()`
+        ALTER TABLE maryland_meeting_minutes
+        ADD COLUMN IF NOT EXISTS translated_agenda_details JSONB NOT NULL DEFAULT '[]'::jsonb
       `
     })()
 
@@ -186,6 +206,16 @@ const getEnglishAgendaIndexByDetails = (details: string) => {
   )
 }
 
+const translateCustomPublishedAgendaDetailsToFrench = (details: string) => {
+  const prayerGivenMatch = details.match(/^Prayer was given by\s+(.+?)[.]?$/i)
+
+  if (prayerGivenMatch?.[1]) {
+    return `La prière a été faite par ${prayerGivenMatch[1].trim()}.`
+  }
+
+  return details
+}
+
 const localizePublishedAgendaTitle = (title: string, index: number, locale: Locale) => {
   const trimmedTitle = title.trim()
 
@@ -212,9 +242,11 @@ const localizePublishedAgendaDetails = (details: string, index: number, locale: 
 
   const englishAgendaIndex = getEnglishAgendaIndexByDetails(trimmedDetails)
 
-  return englishAgendaIndex >= 0
-    ? marylandMeetingAgendaByLocale[locale][englishAgendaIndex]?.defaultDetails ?? trimmedDetails
-    : trimmedDetails
+  if (englishAgendaIndex >= 0) {
+    return marylandMeetingAgendaByLocale[locale][englishAgendaIndex]?.defaultDetails ?? trimmedDetails
+  }
+
+  return locale === 'fr' ? translateCustomPublishedAgendaDetailsToFrench(trimmedDetails) : trimmedDetails
 }
 
 const getAgendaItemCount = (
@@ -237,9 +269,15 @@ export const normalizeMarylandMeetingAgendaDetails = (agendaDetails: string[], c
   return Array.from({ length: count }, (_, index) => agendaDetails[index]?.trim() ?? '')
 }
 
+const normalizeTranslatedAgendaItems = (agendaItems: string[], count: number) => {
+  return Array.from({ length: count }, (_, index) => agendaItems[index]?.trim() ?? '')
+}
+
 const mapMarylandMeetingMinutes = (row: MarylandMeetingMinutesRow): MarylandMeetingMinutes => {
   const agendaTitles = getStringArrayFromValue(row.agenda_titles)
   const agendaDetails = getStringArrayFromValue(row.agenda_details)
+  const translatedAgendaTitles = getStringArrayFromValue(row.translated_agenda_titles)
+  const translatedAgendaDetails = getStringArrayFromValue(row.translated_agenda_details)
 
   const agendaItemCount = getAgendaItemCount(agendaTitles, agendaDetails)
 
@@ -247,6 +285,8 @@ const mapMarylandMeetingMinutes = (row: MarylandMeetingMinutesRow): MarylandMeet
     dateSlug: row.date_slug,
     agendaTitles: normalizeMarylandMeetingAgendaTitles(agendaTitles, 'en', agendaItemCount),
     agendaDetails: normalizeMarylandMeetingAgendaDetails(agendaDetails, agendaItemCount),
+    translatedAgendaTitles: normalizeTranslatedAgendaItems(translatedAgendaTitles, agendaItemCount),
+    translatedAgendaDetails: normalizeTranslatedAgendaItems(translatedAgendaDetails, agendaItemCount),
     createdAt: new Date(row.created_at),
     updatedAt: new Date(row.updated_at)
   }
@@ -255,7 +295,9 @@ const mapMarylandMeetingMinutes = (row: MarylandMeetingMinutesRow): MarylandMeet
 export const getMarylandMeetingAgendaItems = (
   locale: Locale,
   publishedAgendaTitles?: string[],
-  publishedAgendaDetails?: string[]
+  publishedAgendaDetails?: string[],
+  translatedAgendaTitles?: string[],
+  translatedAgendaDetails?: string[]
 ): MarylandMeetingAgendaDisplayItem[] => {
   const agendaItemCount =
     publishedAgendaTitles || publishedAgendaDetails
@@ -270,12 +312,31 @@ export const getMarylandMeetingAgendaItems = (
     ? normalizeMarylandMeetingAgendaDetails(publishedAgendaDetails, agendaItemCount)
     : null
 
-  return Array.from({ length: agendaItemCount }, (_, index) => ({
-    title: normalizedTitles?.[index]
-      ? localizePublishedAgendaTitle(normalizedTitles[index], index, locale)
-      : getFallbackAgendaTitle(index, locale),
-    details: normalizedDetails ? localizePublishedAgendaDetails(normalizedDetails[index] ?? '', index, locale) : ''
-  }))
+  const normalizedTranslatedTitles =
+    locale === 'fr' && translatedAgendaTitles
+      ? normalizeTranslatedAgendaItems(translatedAgendaTitles, agendaItemCount)
+      : null
+
+  const normalizedTranslatedDetails =
+    locale === 'fr' && translatedAgendaDetails
+      ? normalizeTranslatedAgendaItems(translatedAgendaDetails, agendaItemCount)
+      : null
+
+  return Array.from({ length: agendaItemCount }, (_, index) => {
+    const translatedTitle = normalizedTranslatedTitles?.[index]?.trim()
+    const translatedDetails = normalizedTranslatedDetails?.[index]?.trim()
+
+    return {
+      title:
+        translatedTitle ||
+        (normalizedTitles?.[index]
+          ? localizePublishedAgendaTitle(normalizedTitles[index], index, locale)
+          : getFallbackAgendaTitle(index, locale)),
+      details:
+        translatedDetails ||
+        (normalizedDetails ? localizePublishedAgendaDetails(normalizedDetails[index] ?? '', index, locale) : '')
+    }
+  })
 }
 
 export const listMarylandMeetingMinutes = async () => {
@@ -286,6 +347,8 @@ export const listMarylandMeetingMinutes = async () => {
       date_slug,
       agenda_titles,
       agenda_details,
+      translated_agenda_titles,
+      translated_agenda_details,
       created_at,
       updated_at
     FROM maryland_meeting_minutes
@@ -303,6 +366,8 @@ export const getMarylandMeetingMinutes = async (dateSlug: string) => {
       date_slug,
       agenda_titles,
       agenda_details,
+      translated_agenda_titles,
+      translated_agenda_details,
       created_at,
       updated_at
     FROM maryland_meeting_minutes
@@ -334,30 +399,44 @@ export const saveMarylandMeetingMinutes = async (
 
   const normalizedTitles = normalizedAgendaItems.map((item, index) => item.title || getGenericAgendaTitle(index))
   const normalizedDetails = normalizedAgendaItems.map(item => item.details)
+  const translationResult = await translateTextsToFrench([...normalizedTitles, ...normalizedDetails])
+  const translatedTitles = translationResult.translations.slice(0, normalizedTitles.length)
+  const translatedDetails = translationResult.translations.slice(normalizedTitles.length)
 
   const rows = (await getSql()`
     INSERT INTO maryland_meeting_minutes (
       date_slug,
       agenda_titles,
-      agenda_details
+      agenda_details,
+      translated_agenda_titles,
+      translated_agenda_details
     )
     VALUES (
       ${dateSlug},
       ${JSON.stringify(normalizedTitles)}::jsonb,
-      ${JSON.stringify(normalizedDetails)}::jsonb
+      ${JSON.stringify(normalizedDetails)}::jsonb,
+      ${JSON.stringify(translatedTitles)}::jsonb,
+      ${JSON.stringify(translatedDetails)}::jsonb
     )
     ON CONFLICT (date_slug)
     DO UPDATE SET
       agenda_titles = EXCLUDED.agenda_titles,
       agenda_details = EXCLUDED.agenda_details,
+      translated_agenda_titles = EXCLUDED.translated_agenda_titles,
+      translated_agenda_details = EXCLUDED.translated_agenda_details,
       updated_at = NOW()
     RETURNING
       date_slug,
       agenda_titles,
       agenda_details,
+      translated_agenda_titles,
+      translated_agenda_details,
       created_at,
       updated_at
   `) as MarylandMeetingMinutesRow[]
 
-  return mapMarylandMeetingMinutes(rows[0])
+  return {
+    minutes: mapMarylandMeetingMinutes(rows[0]),
+    translationStatus: translationResult.status
+  } satisfies SaveMarylandMeetingMinutesResult
 }

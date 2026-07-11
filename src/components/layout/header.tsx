@@ -18,7 +18,13 @@ import { ModeToggle } from '@/components/layout/mode-toggle'
 import { siteContent } from '@/assets/data/site-content'
 
 import { adminPath, profilePath, signInPath } from '@/lib/auth'
-import { getAlternateLocaleHref, getLocaleFromPathname, getLocaleHomeHref, getLocalizedHref } from '@/lib/i18n'
+import {
+  getAlternateLocaleHref,
+  getLocaleFromPathname,
+  getLocaleHomeHref,
+  getLocalePreferenceCookie,
+  getLocalizedHref
+} from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
 import BamenaLogo from '@/assets/svg/bamena-logo'
@@ -92,6 +98,7 @@ const Header = ({ className, isAdmin = false }: HeaderProps) => {
   const homeHref = getLocaleHomeHref(locale)
   const isHomePage = pathname === homeHref
   const alternateLocaleHref = getAlternateLocaleHref(pathname)
+  const alternateLocale = locale === 'fr' ? 'en' : 'fr'
   const localizedSignInPath = getLocalizedHref(signInPath, locale)
 
   const navigationData = isHomePage
@@ -106,6 +113,10 @@ const Header = ({ className, isAdmin = false }: HeaderProps) => {
   // Only use active section if it's actually in our navigation list
   const detectedActiveSection = useActiveSection(sectionIds)
   const activeSection = sectionIds.includes(detectedActiveSection) ? detectedActiveSection : ''
+
+  const rememberLocale = (nextLocale = locale) => {
+    document.cookie = getLocalePreferenceCookie(nextLocale)
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -154,7 +165,12 @@ const Header = ({ className, isAdmin = false }: HeaderProps) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant='outline' size='icon' className='ml-2 rounded-full text-xs font-semibold' asChild>
-                <Link href={alternateLocaleHref} scroll={!isHomePage} aria-label={content.header.languageToggleLabel}>
+                <Link
+                  href={alternateLocaleHref}
+                  scroll={!isHomePage}
+                  aria-label={content.header.languageToggleLabel}
+                  onClick={() => rememberLocale(alternateLocale)}
+                >
                   {content.header.languageToggleText}
                 </Link>
               </Button>
@@ -192,7 +208,7 @@ const Header = ({ className, isAdmin = false }: HeaderProps) => {
               {isAdmin && (
                 <>
                   <Button variant='outline' className='rounded-full max-sm:hidden' asChild>
-                    <Link href={adminPath}>
+                    <Link href={adminPath} onClick={() => rememberLocale()}>
                       <ShieldCheckIcon />
                       Admin
                     </Link>
@@ -200,7 +216,7 @@ const Header = ({ className, isAdmin = false }: HeaderProps) => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button variant='outline' size='icon' className='rounded-full sm:hidden' asChild>
-                        <Link href={adminPath}>
+                        <Link href={adminPath} onClick={() => rememberLocale()}>
                           <ShieldCheckIcon />
                           <span className='sr-only'>Admin</span>
                         </Link>

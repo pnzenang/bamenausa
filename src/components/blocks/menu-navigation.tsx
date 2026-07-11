@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react'
 
-import Link from 'next/link'
-
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -64,9 +62,8 @@ const MenuNavigation = ({ navigationData, activeSection, className }: MenuNaviga
                     isActive ? 'text-primary bg-primary/5 dark:bg-primary/10' : 'text-muted-foreground'
                   )}
                 >
-                  <Link
+                  <a
                     href={navItem.href}
-                    prefetch={false}
                     onClick={e => {
                       if (!isSectionLink) return
 
@@ -75,7 +72,7 @@ const MenuNavigation = ({ navigationData, activeSection, className }: MenuNaviga
                     }}
                   >
                     {navItem.title}
-                  </Link>
+                  </a>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             )
@@ -92,9 +89,7 @@ const MenuNavigation = ({ navigationData, activeSection, className }: MenuNaviga
                   <li>
                     {navItem.items?.map(item => (
                       <NavigationMenuLink key={item.title} asChild>
-                        <Link href={item.href} prefetch={false}>
-                          {item.title}
-                        </Link>
+                        <a href={item.href}>{item.title}</a>
                       </NavigationMenuLink>
                     ))}
                   </li>

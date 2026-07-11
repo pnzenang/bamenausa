@@ -46,6 +46,11 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
+        url: '/images/logo/BAMENA-USA.svg',
+        sizes: 'any',
+        type: 'image/svg+xml'
+      },
+      {
         url: '/favicon/favicon-16x16.png',
         sizes: '16x16',
         type: 'image/png'

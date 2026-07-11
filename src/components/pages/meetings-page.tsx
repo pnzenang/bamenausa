@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { CalendarDaysIcon, MapPinIcon } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
@@ -65,13 +63,13 @@ const MeetingsPage = ({ locale }: MeetingsPageProps) => {
             )
 
             return state.href ? (
-              <Link
+              <a
                 key={state.name}
                 href={state.href}
                 className='group block rounded-md focus-visible:ring-ring focus-visible:ring-[3px] focus-visible:outline-none'
               >
                 {card}
-              </Link>
+              </a>
             ) : (
               <div key={state.name}>{card}</div>
             )

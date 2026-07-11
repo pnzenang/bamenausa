@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
 import { isAdminUser } from '@/lib/auth'
-import { deleteMemberProfile, listMemberProfiles } from '@/lib/member-profiles'
+import { deleteMemberProfile, listMemberProfilesWithTimeout } from '@/lib/member-profiles'
 
 const deleteMemberAction = async (formData: FormData) => {
   'use server'
@@ -31,11 +31,11 @@ const deleteMemberAction = async (formData: FormData) => {
 }
 
 const MembersPage = async () => {
-  let members: Awaited<ReturnType<typeof listMemberProfiles>> = []
+  let members: Awaited<ReturnType<typeof listMemberProfilesWithTimeout>> = []
   let membersError = false
 
   try {
-    members = await listMemberProfiles()
+    members = await listMemberProfilesWithTimeout()
   } catch {
     membersError = true
   }

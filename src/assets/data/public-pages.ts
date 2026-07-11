@@ -131,12 +131,14 @@ export const publicPageContent: Record<
         {
           name: 'Virginia',
           region: 'Mid-Atlantic',
-          description: 'A state group for families and members gathering across Virginia.'
+          description: 'A state group for families and members gathering across Virginia.',
+          href: '/meetings/maryland'
         },
         {
           name: 'District of Columbia',
           region: 'DMV area',
-          description: 'A central meeting area for members in and around Washington, DC.'
+          description: 'A central meeting area for members in and around Washington, DC.',
+          href: '/meetings/maryland'
         },
         {
           name: 'Georgia',
@@ -257,7 +259,7 @@ export const publicPageContent: Record<
       title: 'Réunions Bamena-USA',
       description:
         'Un espace simple pour trouver les informations de réunion par État lorsque les groupes locaux Bamena-USA s’organisent.',
-      stateSectionTitle: 'États des réunions',
+      stateSectionTitle: 'Réunions par État',
       stateSectionDescription:
         'Choisissez une communauté d’État ci-dessous. Les horaires, les responsables et les lieux pourront être ajoutés à mesure que chaque groupe confirme son plan de réunion.',
       statusLabel: 'Informations à venir',
@@ -265,19 +267,21 @@ export const publicPageContent: Record<
       states: [
         {
           name: 'Maryland',
-          region: 'Mid-Atlantic',
+          region: 'Moyen-Atlantique',
           description: 'Un point de réunion pour les membres du Maryland et des communautés voisines.',
           href: '/fr/meetings/maryland'
         },
         {
           name: 'Virginie',
-          region: 'Mid-Atlantic',
-          description: 'Un groupe d’État pour les familles et membres qui se réunissent en Virginie.'
+          region: 'Moyen-Atlantique',
+          description: 'Un groupe d’État pour les familles et membres qui se réunissent en Virginie.',
+          href: '/fr/meetings/maryland'
         },
         {
           name: 'District de Columbia',
           region: 'Zone DMV',
-          description: 'Une zone centrale de réunion pour les membres autour de Washington, DC.'
+          description: 'Une zone centrale de réunion pour les membres autour de Washington, DC.',
+          href: '/fr/meetings/maryland'
         },
         {
           name: 'Géorgie',
@@ -301,22 +305,22 @@ export const publicPageContent: Record<
         },
         {
           name: 'Illinois',
-          region: 'Midwest',
+          region: 'Centre-Ouest',
           description: 'Un groupe de réunion pour les membres et familles Bamena-USA en Illinois.'
         },
         {
           name: 'Ohio',
-          region: 'Midwest',
+          region: 'Centre-Ouest',
           description: 'Un groupe de réunion pour les membres et familles qui s’organisent en Ohio.'
         },
         {
           name: 'Indiana',
-          region: 'Midwest',
+          region: 'Centre-Ouest',
           description: 'Une communauté d’État pour les membres Bamena-USA qui se connectent en Indiana.'
         },
         {
           name: 'Michigan',
-          region: 'Midwest',
+          region: 'Centre-Ouest',
           description: 'Une zone de réunion pour les membres et familles qui se réunissent au Michigan.'
         },
         {

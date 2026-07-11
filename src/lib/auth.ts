@@ -5,7 +5,7 @@ export const accountPath = '/account'
 export const membersPath = '/members'
 export const fullMembersPath = '/members/full'
 export const adminPath = '/backend'
-export const bamenaLogoUrl = 'https://res.cloudinary.com/dp8tkb7hq/image/upload/v1769013009/bamenaLogo_mqio2l.svg'
+export const bamenaLogoUrl = '/images/logo/BAMENA-USA.svg'
 
 type UserMetadata = Record<string, unknown>
 

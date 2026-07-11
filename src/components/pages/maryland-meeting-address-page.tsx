@@ -20,7 +20,7 @@ const marylandMeetingAddressContent = {
   en: {
     backHref: '/meetings/maryland#schedule',
     backLabel: 'Back to Maryland meetings',
-    badge: 'Maryland',
+    badge: 'DC/MD/VA',
     title: 'Maryland Meeting Address',
     descriptionPrefix: 'Meeting address for',
     detailsTitle: 'Meeting information',
@@ -33,7 +33,7 @@ const marylandMeetingAddressContent = {
   fr: {
     backHref: '/fr/meetings/maryland#schedule',
     backLabel: 'Retour aux réunions du Maryland',
-    badge: 'Maryland',
+    badge: 'DC/MD/VA',
     title: 'Adresse de la réunion du Maryland',
     descriptionPrefix: 'Adresse de la réunion du',
     detailsTitle: 'Informations de la réunion',
@@ -41,7 +41,7 @@ const marylandMeetingAddressContent = {
     dateLabel: 'Date',
     timeLabel: 'Heure',
     time: '19 h - 21 h',
-    mapsLabel: 'Ouvrir dans Maps'
+    mapsLabel: 'Ouvrir dans Google Maps'
   }
 } as const
 

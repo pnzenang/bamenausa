@@ -1,13 +1,10 @@
-import { Suspense } from 'react'
-
 import { MemberDirectoryList, type MemberDirectoryListMember } from '@/components/members/member-directory-list'
-import { MemberDirectorySkeleton } from '@/components/members/member-directory-skeleton'
 import { Badge } from '@/components/ui/badge'
 
 import { publicPageContent } from '@/assets/data/public-pages'
 
 import type { Locale } from '@/lib/i18n'
-import { listMemberProfiles } from '@/lib/member-profiles'
+import { listMemberProfilesWithTimeout } from '@/lib/member-profiles'
 
 type PublicMembersDirectoryProps = {
   locale: Locale
@@ -19,11 +16,11 @@ type PublicMembersPageProps = {
 
 const PublicMembersDirectory = async ({ locale }: PublicMembersDirectoryProps) => {
   const content = publicPageContent[locale].members
-  let members: Awaited<ReturnType<typeof listMemberProfiles>> = []
+  let members: Awaited<ReturnType<typeof listMemberProfilesWithTimeout>> = []
   let membersError = false
 
   try {
-    members = await listMemberProfiles()
+    members = await listMemberProfilesWithTimeout()
   } catch {
     membersError = true
   }
@@ -57,7 +54,7 @@ const PublicMembersPage = ({ locale }: PublicMembersPageProps) => {
 
   return (
     <section className='bg-muted/30 min-h-screen px-4 py-10 sm:px-6 lg:px-8'>
-      <div className='mx-auto max-w-6xl space-y-8'>
+      <div className='mx-auto max-w-7xl space-y-8'>
         <div className='flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between'>
           <div className='space-y-3'>
             <Badge variant='outline'>{content.badge}</Badge>
@@ -65,9 +62,7 @@ const PublicMembersPage = ({ locale }: PublicMembersPageProps) => {
           </div>
         </div>
 
-        <Suspense fallback={<MemberDirectorySkeleton variant='public' loadingLabel={content.loadingLabel} />}>
-          <PublicMembersDirectory locale={locale} />
-        </Suspense>
+        <PublicMembersDirectory locale={locale} />
       </div>
     </section>
   )

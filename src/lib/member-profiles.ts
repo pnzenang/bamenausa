@@ -29,6 +29,7 @@ type OptionalUsState = UsStateOptionValue | ''
 type OptionalBamenaCompound = BamenaCompoundOptionValue | ''
 
 const memberProfilesCacheTag = 'member-profiles'
+const defaultMemberProfilesTimeoutMs = 8000
 
 export type MemberProfile = {
   clerkUserId: string
@@ -217,6 +218,25 @@ export const listMemberProfiles = async () => {
   const rows = await listMemberProfileRows()
 
   return rows.map(mapMemberProfile)
+}
+
+export const listMemberProfilesWithTimeout = async (timeoutMs = defaultMemberProfilesTimeoutMs) => {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined
+
+  try {
+    return await Promise.race([
+      listMemberProfiles(),
+      new Promise<never>((_, reject) => {
+        timeoutId = setTimeout(() => {
+          reject(new Error(`Member directory lookup timed out after ${timeoutMs}ms.`))
+        }, timeoutMs)
+      })
+    ])
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+  }
 }
 
 export const deleteMemberProfile = async (clerkUserId: string) => {

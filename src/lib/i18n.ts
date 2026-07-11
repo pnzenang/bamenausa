@@ -3,8 +3,11 @@ export const locales = ['en', 'fr'] as const
 export type Locale = (typeof locales)[number]
 
 export const defaultLocale: Locale = 'en'
+export const localePreferenceCookieName = 'bamena-locale'
+export const localePreferenceCookieMaxAge = 60 * 60 * 24 * 365
 
 const localizablePagePaths = new Set([
+  '/',
   '/members',
   '/galery',
   '/necrology',
@@ -35,6 +38,53 @@ export const getLocaleFromPathname = (pathname: string | null | undefined): Loca
   const firstSegment = pathname?.split('/').filter(Boolean)[0]
 
   return firstSegment === 'fr' ? 'fr' : defaultLocale
+}
+
+export const isLocale = (value: string | null | undefined): value is Locale => {
+  return locales.includes(value as Locale)
+}
+
+export const getLocalePreferenceFromCookieValue = (value: string | null | undefined) => {
+  return isLocale(value) ? value : null
+}
+
+export const getLocalePreferenceFromCookieHeader = (cookieHeader: string | null | undefined) => {
+  const cookieValue = cookieHeader
+    ?.split(';')
+    .map(cookie => cookie.trim())
+    .find(cookie => cookie.startsWith(`${localePreferenceCookieName}=`))
+    ?.split('=')
+    .slice(1)
+    .join('=')
+
+  if (!cookieValue) return null
+
+  return getLocalePreferenceFromCookieValue(decodeURIComponent(cookieValue))
+}
+
+export const getLocalePreferenceFromPathname = (pathname: string | null | undefined) => {
+  const normalizedPathname = pathname || '/'
+
+  if (normalizedPathname === '/fr') return 'fr'
+
+  if (normalizedPathname.startsWith('/fr/')) {
+    const unprefixedPathname = normalizedPathname.replace(/^\/fr/, '') || '/'
+
+    return isLocalizablePagePath(unprefixedPathname) ? 'fr' : null
+  }
+
+  return isLocalizablePagePath(normalizedPathname) ? 'en' : null
+}
+
+export const getLocaleFromPathnameOrPreference = (
+  pathname: string | null | undefined,
+  preferredLocale: Locale | null | undefined
+) => {
+  return getLocalePreferenceFromPathname(pathname) ?? preferredLocale ?? defaultLocale
+}
+
+export const getLocalePreferenceCookie = (locale: Locale) => {
+  return `${localePreferenceCookieName}=${locale}; path=/; max-age=${localePreferenceCookieMaxAge}; SameSite=Lax`
 }
 
 export const getLocaleHomeHref = (locale: Locale) => {

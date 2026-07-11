@@ -207,12 +207,10 @@ export const MemberDirectoryList = ({
         <CardContent>
           {filteredMembers.length === 0 ? (
             <div className='bg-muted/60 rounded-md border px-4 py-10 text-center'>
-              <p className='font-medium'>
-                {members.length === 0 ? labels.noProfiles : labels.noMatches}
-              </p>
+              <p className='font-medium'>{members.length === 0 ? labels.noProfiles : labels.noMatches}</p>
             </div>
           ) : variant === 'public' ? (
-            <div className='grid gap-4 md:grid-cols-3'>
+            <div className='grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
               {paginatedMembers.map(member => (
                 <PublicMemberCard key={member.clerkUserId} member={member} labels={labels} />
               ))}
@@ -319,9 +317,11 @@ const PublicMemberCard = ({
           <Image src={imageUrl} alt={fullName} fill className='object-cover' />
         </div>
         <div className='min-w-0 flex-1'>
-          <h2 className='flex flex-wrap items-baseline gap-x-3 gap-y-1 text-lg font-semibold break-words'>
-            <span className='text-primary font-script text-xl font-normal leading-none sm:text-2xl'>{eulogies}</span>
-            <span>{fullName}</span>
+          <h2 className='text-lg leading-snug font-semibold break-words'>
+            <span className='text-primary font-script mr-2 inline text-xl leading-none font-normal sm:text-2xl'>
+              {eulogies}
+            </span>
+            <span className='inline'>{fullName}</span>
           </h2>
           {quarter && (
             <p className='text-muted-foreground mt-2 text-sm'>
@@ -361,9 +361,11 @@ const FullMemberCard = ({
         </div>
 
         <div className='min-w-0 space-y-2'>
-          <h2 className='flex flex-wrap items-baseline gap-x-3 gap-y-1 text-lg font-semibold break-words'>
-            <span className='text-primary font-script text-xl font-normal leading-none sm:text-2xl'>{eulogies}</span>
-            <span>{fullName}</span>
+          <h2 className='text-lg leading-snug font-semibold break-words'>
+            <span className='text-primary font-script mr-2 inline text-xl leading-none font-normal sm:text-2xl'>
+              {eulogies}
+            </span>
+            <span className='inline'>{fullName}</span>
           </h2>
           <div className='grid gap-2 text-sm sm:grid-cols-2'>
             <p className='text-muted-foreground flex items-center gap-2 break-words'>
@@ -483,7 +485,7 @@ const AdminMemberTableRow = ({
         </div>
       </td>
       <td className='px-4 py-3 font-medium break-words'>{quarter}</td>
-      <td className='px-4 py-3 text-muted-foreground break-words'>{state}</td>
+      <td className='text-muted-foreground px-4 py-3 break-words'>{state}</td>
       <td className='px-4 py-3 text-right'>
         <form
           action={deleteMemberAction}

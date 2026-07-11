@@ -13,7 +13,7 @@ const stats = [
   {
     title: 'Events',
     value: '6',
-    detail: '2 need volunteers',
+    detail: '2 need volunteer support',
     icon: CalendarDaysIcon
   },
   {
@@ -60,7 +60,7 @@ const BackendOverviewPage = () => {
         <Badge variant='outline'>Overview</Badge>
         <h2 className='text-3xl font-semibold tracking-normal'>Backend dashboard</h2>
         <p className='text-muted-foreground max-w-3xl text-base'>
-          Placeholder operating view for Bamena-USA member management, events, donations, and admin settings.
+          Placeholder operational view for Bamena-USA member management, events, donations, and admin settings.
         </p>
       </div>
 
@@ -86,7 +86,7 @@ const BackendOverviewPage = () => {
       <Card className='rounded-md'>
         <CardHeader>
           <CardTitle>Operational queue</CardTitle>
-          <CardDescription>Sample backend work items for the next admin pass.</CardDescription>
+          <CardDescription>Sample backend work items for the next admin review.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className='divide-y rounded-md border'>

@@ -3,7 +3,15 @@
 import { useId, useMemo, useState } from 'react'
 
 import Image from 'next/image'
-import { ChevronLeftIcon, ChevronRightIcon, MailIcon, MapPinIcon, PhoneIcon, UsersRoundIcon } from 'lucide-react'
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MailIcon,
+  MapPinIcon,
+  PhoneIcon,
+  Trash2Icon,
+  UsersRoundIcon
+} from 'lucide-react'
 
 import {
   MemberDirectoryFilterBar,
@@ -34,6 +42,7 @@ type MemberDirectoryListProps = {
   members: MemberDirectoryListMember[]
   variant: 'public' | 'full'
   labels?: MemberDirectoryListLabels
+  deleteMemberAction?: (formData: FormData) => Promise<void>
 }
 
 export type MemberDirectoryListLabels = {
@@ -54,6 +63,7 @@ export type MemberDirectoryListLabels = {
   noEmail: string
   noTelephone: string
   noQuarter: string
+  noState: string
   noLocation: string
 }
 
@@ -83,6 +93,7 @@ export const defaultMemberDirectoryLabels: MemberDirectoryListLabels = {
   noEmail: 'No email on file',
   noTelephone: 'No telephone on file',
   noQuarter: 'No quarter on file',
+  noState: 'No state on file',
   noLocation: 'No city/state on file'
 }
 
@@ -98,7 +109,9 @@ const selectClassName =
   'border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 h-9 rounded-md border px-3 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:ring-[3px]'
 
 const getEulogyLabel = (value?: string) => {
-  return eulogyOptions.find(option => option.value === value)?.label ?? eulogyOptions[0].label
+  const customLabel = value?.trim()
+
+  return eulogyOptions.find(option => option.value === value)?.label ?? (customLabel || eulogyOptions[0].label)
 }
 
 const getUsStateLabel = (value?: string) => {
@@ -121,7 +134,12 @@ const MemberLocation = ({ city, state }: { city: string; state: string }) => {
   )
 }
 
-export const MemberDirectoryList = ({ members, variant, labels = defaultMemberDirectoryLabels }: MemberDirectoryListProps) => {
+export const MemberDirectoryList = ({
+  members,
+  variant,
+  labels = defaultMemberDirectoryLabels,
+  deleteMemberAction
+}: MemberDirectoryListProps) => {
   const pageSizeId = useId()
   const [filters, setFilters] = useState<MemberDirectoryFilters>(defaultFilters)
   const [pageSize, setPageSize] = useState<number>(pageSizeOptions[1])
@@ -199,6 +217,8 @@ export const MemberDirectoryList = ({ members, variant, labels = defaultMemberDi
                 <PublicMemberCard key={member.clerkUserId} member={member} labels={labels} />
               ))}
             </div>
+          ) : deleteMemberAction ? (
+            <AdminMemberTable members={paginatedMembers} labels={labels} deleteMemberAction={deleteMemberAction} />
           ) : (
             <div className='space-y-4'>
               {paginatedMembers.map(member => (
@@ -372,5 +392,115 @@ const FullMemberCard = ({
         </div>
       </div>
     </article>
+  )
+}
+
+const AdminMemberTable = ({
+  members,
+  labels,
+  deleteMemberAction
+}: {
+  members: MemberDirectoryListMember[]
+  labels: MemberDirectoryListLabels
+  deleteMemberAction: (formData: FormData) => Promise<void>
+}) => {
+  return (
+    <div className='overflow-x-auto rounded-md border'>
+      <table className='w-full min-w-[760px] table-fixed text-sm'>
+        <colgroup>
+          <col className='w-[48%]' />
+          <col className='w-[22%]' />
+          <col className='w-[18%]' />
+          <col className='w-[12%]' />
+        </colgroup>
+        <thead className='bg-muted/60 text-muted-foreground'>
+          <tr className='border-b text-left'>
+            <th scope='col' className='px-4 py-3 font-medium'>
+              Member
+            </th>
+            <th scope='col' className='px-4 py-3 font-medium'>
+              Quartier
+            </th>
+            <th scope='col' className='px-4 py-3 font-medium'>
+              State
+            </th>
+            <th scope='col' className='px-4 py-3 text-right font-medium'>
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody className='divide-y'>
+          {members.map(member => (
+            <AdminMemberTableRow
+              key={member.clerkUserId}
+              member={member}
+              labels={labels}
+              deleteMemberAction={deleteMemberAction}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+const AdminMemberTableRow = ({
+  member,
+  labels,
+  deleteMemberAction
+}: {
+  member: MemberDirectoryListMember
+  labels: MemberDirectoryListLabels
+  deleteMemberAction: (formData: FormData) => Promise<void>
+}) => {
+  const fullName = getMemberFullName(member)
+  const imageUrl = member.imageUrl ?? '/favicon/android-chrome-192x192.png'
+  const eulogies = getEulogyLabel(member.eulogyPreference)
+  const quarter = getBamenaCompoundLabel(member.bamenaCompound) || labels.noQuarter
+  const state = getUsStateLabel(member.usState) || labels.noState
+
+  return (
+    <tr className='align-middle'>
+      <td className='px-4 py-3'>
+        <div className='flex min-w-0 items-center gap-3'>
+          <div className='bg-muted relative size-12 shrink-0 overflow-hidden rounded-full border'>
+            <Image src={imageUrl} alt={fullName} fill className='object-cover' />
+          </div>
+          <div className='min-w-0'>
+            <p className='font-medium break-words'>{fullName}</p>
+            <p className='text-primary font-script text-lg leading-none'>{eulogies}</p>
+            <div className='text-muted-foreground mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs'>
+              <span className='inline-flex min-w-0 items-center gap-1 break-all'>
+                <MailIcon className='size-3 shrink-0' />
+                {member.email || labels.noEmail}
+              </span>
+              <span className='inline-flex min-w-0 items-center gap-1 break-words'>
+                <PhoneIcon className='size-3 shrink-0' />
+                {member.phoneNumber || labels.noTelephone}
+              </span>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td className='px-4 py-3 font-medium break-words'>{quarter}</td>
+      <td className='px-4 py-3 text-muted-foreground break-words'>{state}</td>
+      <td className='px-4 py-3 text-right'>
+        <form
+          action={deleteMemberAction}
+          className='inline-flex justify-end'
+          onSubmit={event => {
+            if (!window.confirm(`Delete ${fullName} from the member directory? This cannot be undone.`)) {
+              event.preventDefault()
+            }
+          }}
+        >
+          <input type='hidden' name='clerkUserId' value={member.clerkUserId} />
+          <Button type='submit' variant='destructive' size='sm' className='rounded-full'>
+            <Trash2Icon />
+            Delete
+          </Button>
+        </form>
+      </td>
+    </tr>
   )
 }

@@ -50,7 +50,7 @@ const HomePage = ({ locale }: HomePageProps) => {
 
   return (
     <>
-      <section id='home' className='mt-10 flex flex-col sm:mt-36'>
+      <section id='home' className='flex min-h-[calc(100svh-4.375rem)] flex-col justify-center py-6 sm:py-8 lg:py-10'>
         <VideoHeroSection copy={content.hero} />
       </section>
       <CulturalPrograms programs={content.programs.items} copy={content.programs} />

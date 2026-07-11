@@ -10,8 +10,8 @@ export const navigationData: NavigationSection[] = [
     href: '#about-us'
   },
   {
-    title: 'Events',
-    href: '#initiatives'
+    title: 'Meetings',
+    href: '/meetings'
   },
   {
     title: 'Members',

@@ -8,10 +8,6 @@ type GaleryImage = {
   height: number
 }
 
-type GaleryDisplayImage = GaleryImage & {
-  displayIndex: number
-}
-
 type GaleryPageProps = {
   locale: Locale
 }
@@ -35,40 +31,15 @@ const galeryImageGroups = [
   createGaleryImages([44, 71], 2040, 1530)
 ]
 
-const interleaveGaleryImageGroups = (imageGroups: GaleryImage[][]): GaleryImage[] => {
-  const maxGroupLength = Math.max(...imageGroups.map(group => group.length))
+const putVerticalGaleryImagesFirst = (images: GaleryImage[]): GaleryImage[] => [
+  ...images.filter(image => image.height > image.width),
+  ...images.filter(image => image.height <= image.width)
+]
 
-  return Array.from({ length: maxGroupLength }).flatMap((_, imageIndex) =>
-    imageGroups.flatMap(group => {
-      const image = group[imageIndex]
-
-      return image ? [image] : []
-    })
-  )
-}
-
-const galeryImages = interleaveGaleryImageGroups(galeryImageGroups).map((image, displayIndex) => ({
+const galeryImages = putVerticalGaleryImagesFirst(galeryImageGroups.flat()).map((image, displayIndex) => ({
   ...image,
   displayIndex
 }))
-
-const createBalancedGaleryColumns = (images: GaleryDisplayImage[], columnCount: number): GaleryDisplayImage[][] => {
-  const columns = Array.from({ length: columnCount }, () => ({
-    images: [] as GaleryDisplayImage[],
-    height: 0
-  }))
-
-  images.forEach(image => {
-    const shortestColumn = columns.reduce((shortest, column) => (column.height < shortest.height ? column : shortest))
-
-    shortestColumn.images.push(image)
-    shortestColumn.height += image.height / image.width
-  })
-
-  return columns.map(column => column.images)
-}
-
-const galeryColumns = createBalancedGaleryColumns(galeryImages, 3)
 
 const eagerImageCount = 6
 
@@ -77,27 +48,23 @@ const GaleryPage = ({ locale }: GaleryPageProps) => {
 
   return (
     <section className='bg-background min-h-screen'>
-      <div className='px-4 py-10 text-center sm:px-6 lg:px-8'>
+      <div className='px-4 pt-8 pb-5 text-center sm:px-6 lg:px-8'>
         <h1 className='text-3xl font-bold text-balance sm:text-4xl'>{content.title}</h1>
-        <p className='text-muted-foreground mx-auto mt-3 max-w-2xl text-lg'>{content.description}</p>
+        <p className='text-muted-foreground mx-auto mt-2 max-w-2xl text-base sm:text-lg'>{content.description}</p>
       </div>
 
-      <div className='grid w-full grid-cols-1 gap-6 px-4 pb-10 md:grid-cols-3'>
-        {galeryColumns.map((column, columnIndex) => (
-          <div key={columnIndex} className='space-y-6'>
-            {column.map(image => (
-              <div key={image.src} className='bg-muted rounded-md p-2'>
-                <img
-                  src={image.src}
-                  alt={`${content.imageAltPrefix} ${image.displayIndex + 1}`}
-                  width={image.width}
-                  height={image.height}
-                  loading={image.displayIndex < eagerImageCount ? 'eager' : 'lazy'}
-                  decoding='async'
-                  className='block h-auto w-full rounded-sm'
-                />
-              </div>
-            ))}
+      <div className='w-full columns-1 gap-1 px-1 pb-6 sm:columns-2 sm:gap-1.5 sm:px-2 lg:columns-3 lg:gap-2 xl:columns-4'>
+        {galeryImages.map(image => (
+          <div key={image.src} className='bg-muted mb-1 break-inside-avoid overflow-hidden rounded-sm sm:mb-1.5 lg:mb-2'>
+            <img
+              src={image.src}
+              alt={`${content.imageAltPrefix} ${image.displayIndex + 1}`}
+              width={image.width}
+              height={image.height}
+              loading={image.displayIndex < eagerImageCount ? 'eager' : 'lazy'}
+              decoding='async'
+              className='block h-auto w-full rounded-sm'
+            />
           </div>
         ))}
       </div>

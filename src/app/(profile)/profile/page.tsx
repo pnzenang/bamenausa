@@ -16,7 +16,6 @@ import {
   signInPath,
   usStateOptions,
   type BamenaCompoundOptionValue,
-  type EulogyOptionValue,
   type UsStateOptionValue
 } from '@/lib/auth'
 import { getMemberProfile, saveMemberProfile } from '@/lib/member-profiles'
@@ -27,7 +26,7 @@ export const metadata: Metadata = {
 
 type BamenaProfileMetadata = {
   bamenaProfile?: {
-    eulogyPreference?: EulogyOptionValue
+    eulogyPreference?: string
     phoneNumber?: string
     usState?: UsStateOptionValue | ''
     cameroonOriginCity?: string
@@ -46,12 +45,14 @@ type ProfilePageProps = {
 const selectClassName =
   'border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 h-9 w-full rounded-md border px-3 text-sm shadow-xs outline-none focus-visible:ring-[3px]'
 
-const getEulogyPreference = (value: FormDataEntryValue | null): EulogyOptionValue => {
-  const preference = String(value ?? eulogyOptions[0].value)
+const isKnownEulogyPreference = (value: string) => {
+  return eulogyOptions.some(option => option.value === value)
+}
 
-  return eulogyOptions.some(option => option.value === preference)
-    ? (preference as EulogyOptionValue)
-    : eulogyOptions[0].value
+const getEulogyPreference = (value: FormDataEntryValue | null): string => {
+  const preference = String(value ?? '').trim()
+
+  return isKnownEulogyPreference(preference) ? preference : ''
 }
 
 const getUsState = (value: FormDataEntryValue | null): UsStateOptionValue | '' => {
@@ -87,7 +88,7 @@ const saveProfile = async (formData: FormData) => {
   const profileImage = formData.get('profileImage')
   const email = user.primaryEmailAddress?.emailAddress ?? String(formData.get('email') ?? '').trim()
   let imageUrl = user.imageUrl
-  const hasEulogyPreference = eulogyOptions.some(option => option.value === String(eulogyPreferenceValue ?? ''))
+  const hasEulogyPreference = Boolean(eulogyPreference)
 
   if (!firstName || !lastName || !email || !hasEulogyPreference || !usState || !cameroonOriginCity || !bamenaCompound) {
     redirect('/profile?error=required')
@@ -168,6 +169,10 @@ const ProfilePage = async ({ searchParams }: ProfilePageProps) => {
   const selectedEulogyPreference =
     storedProfile?.eulogyPreference ?? bamenaProfile?.eulogyPreference ?? eulogyOptions[0].value
 
+  const selectedEulogyOption = isKnownEulogyPreference(selectedEulogyPreference)
+    ? selectedEulogyPreference
+    : eulogyOptions[0].value
+
   const selectedUsState = storedProfile?.usState ?? bamenaProfile?.usState ?? ''
   const cameroonOriginCity = storedProfile?.cameroonOriginCity ?? bamenaProfile?.cameroonOriginCity ?? ''
   const selectedBamenaCompound = storedProfile?.bamenaCompound ?? bamenaProfile?.bamenaCompound ?? ''
@@ -182,13 +187,11 @@ const ProfilePage = async ({ searchParams }: ProfilePageProps) => {
   const profileAltText = [firstName, lastName].filter(Boolean).join(' ') || user.fullName || 'Member profile picture'
   const hasCompletedProfile = storedProfile?.profileComplete ?? bamenaProfile?.profileComplete ?? false
 
-  const profileHeading = hasCompletedProfile
-    ? 'View or Edit Your Bamena-USA profile'
-    : 'Create Your Bamena-USA profile'
+  const profileHeading = hasCompletedProfile ? 'View or edit your Bamena-USA profile' : 'Create your Bamena-USA profile'
 
   const profileDescription = hasCompletedProfile
-    ? 'Review your saved details and update your Bamena-USA member profile anytime.'
-    : 'Add the details the community team needs before you use the protected member tools.'
+    ? 'Review your saved information and update your Bamena-USA member profile anytime.'
+    : 'Add the information the community team needs before using the protected member tools.'
 
   return (
     <div className='mx-auto max-w-5xl space-y-8'>
@@ -224,8 +227,8 @@ const ProfilePage = async ({ searchParams }: ProfilePageProps) => {
 
         <Card className='rounded-md'>
           <CardHeader>
-            <CardTitle className='text-xl'>Profile details</CardTitle>
-            <CardDescription>Names, email, telephone, location, compound, and Elogies preference</CardDescription>
+            <CardTitle className='text-xl'>Profile information</CardTitle>
+            <CardDescription>Name, email, telephone, location, compound, and praise preference</CardDescription>
           </CardHeader>
           <CardContent>
             {storageError && (
@@ -256,11 +259,16 @@ const ProfilePage = async ({ searchParams }: ProfilePageProps) => {
                 <Input name='phoneNumber' type='tel' defaultValue={phoneNumber} placeholder='Telephone number' />
               </label>
               <label className='space-y-2'>
-                <span className='text-sm font-medium'>City</span>
-                <Input name='cameroonOriginCity' defaultValue={cameroonOriginCity} placeholder='City' required />
+                <span className='text-sm font-medium'>City of origin</span>
+                <Input
+                  name='cameroonOriginCity'
+                  defaultValue={cameroonOriginCity}
+                  placeholder='City of origin'
+                  required
+                />
               </label>
               <label className='space-y-2'>
-                <span className='text-sm font-medium'>US state</span>
+                <span className='text-sm font-medium'>U.S. state</span>
                 <select name='usState' defaultValue={selectedUsState} className={selectClassName} required>
                   <option value=''>Select a state</option>
                   {usStateOptions.map(option => (
@@ -287,10 +295,10 @@ const ProfilePage = async ({ searchParams }: ProfilePageProps) => {
                 </select>
               </label>
               <label className='space-y-2 sm:col-span-2'>
-                <span className='text-sm font-medium'>Elogies</span>
+                <span className='text-sm font-medium'>Praise preference</span>
                 <select
                   name='eulogyPreference'
-                  defaultValue={selectedEulogyPreference}
+                  defaultValue={selectedEulogyOption}
                   className={selectClassName}
                   required
                 >

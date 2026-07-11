@@ -8,8 +8,8 @@ export const stats = [
   },
   {
     icon: BookOpenText,
-    value: '12+',
-    description: ['Culture & Youth', 'Programs']
+    value: '10+',
+    description: ['Realizations', 'in the Village']
   },
   {
     icon: UsersRound,

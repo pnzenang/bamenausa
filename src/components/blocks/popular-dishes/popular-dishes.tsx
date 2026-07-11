@@ -10,6 +10,7 @@ type CulturalProgram = {
   name: string
   type: string
   description: string
+  imageFit?: 'cover' | 'contain'
 }[]
 
 type CulturalProgramsProps = {
@@ -31,7 +32,7 @@ const CulturalPrograms = ({ programs, copy }: CulturalProgramsProps) => {
           <p className='text-muted-foreground max-w-2xl text-xl'>{copy.description}</p>
         </div>
 
-        <div className='grid gap-6 md:grid-cols-2 lg:gap-y-10 xl:grid-cols-4'>
+        <div className='grid gap-6 md:grid-cols-3 lg:gap-y-10'>
           {programs.map((program, index) => (
             <Card
               key={index}
@@ -44,7 +45,9 @@ const CulturalPrograms = ({ programs, copy }: CulturalProgramsProps) => {
                     alt={program.alt}
                     loading='lazy'
                     decoding='async'
-                    className='aspect-video w-full object-cover object-[center_40%]'
+                    className={`aspect-[3/4] w-full object-center ${
+                      program.imageFit === 'contain' ? 'object-contain' : 'object-cover'
+                    }`}
                   />
                 </div>
                 <div className='space-y-3 px-6 py-5'>

@@ -32,6 +32,7 @@ type CulturalProgram = {
   name: string
   type: string
   description: string
+  imageFit?: 'cover' | 'contain'
 }
 
 type Initiative = {
@@ -184,7 +185,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     jsonLd: {
       websiteDescription:
-        'A nonprofit cultural organization preserving Bamena heritage and strengthening diaspora community.',
+        'A nonprofit cultural organization preserving Bamena heritage and strengthening the diaspora community.',
       organizationDescription:
         'Bamena-USA promotes culture, education, community support, and intergenerational connection for Bamena families and friends in the United States.',
       inLanguage: 'en-US'
@@ -202,8 +203,8 @@ export const siteContent: Record<Locale, SiteContent> = {
         href: '#about-us'
       },
       {
-        title: 'Events',
-        href: '#initiatives'
+        title: 'Meetings',
+        href: '/meetings'
       },
       {
         title: 'Members',
@@ -229,8 +230,8 @@ export const siteContent: Record<Locale, SiteContent> = {
           href: '#about-us'
         },
         {
-          title: 'Events',
-          href: '#initiatives'
+          title: 'Meetings',
+          href: '/meetings'
         },
         {
           title: 'Members',
@@ -253,59 +254,56 @@ export const siteContent: Record<Locale, SiteContent> = {
       eyebrow: 'Bamena USA Gala',
       title: 'Preserving Bamena culture through community, service, and celebration.',
       description:
-        'Bamena-USA is a nonprofit home for heritage education, youth mentorship, family connection, and fundraising that turns cultural pride into lasting community impact.',
+        'Bamena-USA is a nonprofit organization dedicated to heritage education, youth mentorship, family connection, and fundraising. It turns cultural pride into lasting community impact and brings together people of Bamena descent living in the United States, along with their families and supporters.',
       donateCta: 'Donate',
       joinCta: 'Join us',
-      programsCta: 'Explore programs',
+      programsCta: 'Explore our achievements',
       missionEyebrow: 'Our Mission',
       missionItems: [
         {
           title: 'Heritage',
-          description: 'Keep language, stories, music, and traditions alive across generations.'
+          description: 'Keep language, stories, music, and traditions alive across generations in U.S. cities.'
         },
         {
           title: 'Belonging',
-          description: 'Create gathering spaces where families, elders, and youth stay connected.'
+          description: 'Create gathering spaces across U.S. cities where families, elders, and youth stay connected.'
         },
         {
           title: 'Service',
-          description: 'Fund cultural, educational, and community support projects with transparency.'
+          description:
+            'Fund cultural, educational, and community support projects, and support one another through strong social programs that serve everyone of Bamena descent living in the U.S., so no member of the Bamena community is left behind.'
         }
       ]
     },
     programs: {
       eyebrow: 'Culture Programs',
-      title: 'Programs that keep heritage alive.',
+      title: 'Impacts that keep heritage alive.',
       description:
         'Bamena-USA creates practical spaces for learning, service, celebration, and intergenerational connection.',
       items: [
         {
-          image: '/images/culture/gala-2026/bamena-gala-2026-01.jpg',
-          alt: 'Bamena-USA members in traditional attire at the 2026 fundraising gala',
-          name: 'Cultural Preservation',
-          type: 'Heritage',
-          description: 'Storytelling, language, music, and customs shared with dignity across generations.'
+          image: '/images/realization/Louh.jpg',
+          alt: 'Bamena-USA water tower project in Louh',
+          name: 'Louh',
+          type: 'Water Project',
+          description:
+            'Helping families benefit from safer water systems built, maintained, and strengthened by community support.'
         },
         {
-          image: '/images/culture/gala-2026/bamena-gala-2026-04.jpg',
-          alt: 'Bamena-USA women posing together at the 2026 fundraising gala',
-          name: 'Youth Mentorship',
-          type: 'Education',
-          description: 'Workshops and guidance that help young people know their roots and lead with confidence.'
+          image: '/images/realization/Pouzouh.jpg',
+          alt: 'Bamena-USA water tower project in Pouzouh',
+          name: 'Pouzouh',
+          type: 'Water Project',
+          description:
+            'Investing in water access that helps communities store, protect, and share a dependable local supply.'
         },
         {
-          image: '/images/culture/gala-2026/bamena-gala-2026-06.jpg',
-          alt: 'Community members celebrating at the Bamena Water Project fundraising gala',
-          name: 'Community Events',
-          type: 'Celebration',
-          description: 'Gala nights, family gatherings, and cultural showcases that bring the diaspora together.'
-        },
-        {
-          image: '/images/culture/gala-2026/bamena-gala-2026-10.jpg',
-          alt: 'Bamena-USA gala guests gathered in matching cultural attire',
-          name: 'Community Support',
-          type: 'Service',
-          description: 'Volunteer projects, member care, and fundraising that turn generosity into practical help.'
+          image: '/images/realization/FopLouh.jpg',
+          alt: 'Bamena-USA completed water infrastructure project in Fop Louh',
+          name: 'FopLouh',
+          type: 'Water Project',
+          description:
+            'Turning community generosity into practical water infrastructure that supports daily life for years to come.'
         }
       ]
     },
@@ -324,8 +322,8 @@ export const siteContent: Record<Locale, SiteContent> = {
         },
         {
           icon: BookOpenText,
-          value: '12+',
-          description: ['Culture & Youth', 'Programs']
+          value: '10+',
+          description: ['Realizations', 'in the Village']
         },
         {
           icon: UsersRound,
@@ -496,8 +494,8 @@ export const siteContent: Record<Locale, SiteContent> = {
         href: '#about-us'
       },
       {
-        title: 'Événements',
-        href: '#initiatives'
+        title: 'Réunions',
+        href: '/fr/meetings'
       },
       {
         title: 'Membres',
@@ -523,13 +521,13 @@ export const siteContent: Record<Locale, SiteContent> = {
           href: '#about-us'
         },
         {
-          title: 'Événements',
-          href: '#initiatives'
+          title: 'Réunions',
+          href: '/fr/meetings'
         },
-      {
-        title: 'Membres',
-        href: '/fr/members'
-      },
+        {
+          title: 'Membres',
+          href: '/fr/members'
+        },
         {
           title: 'Contact',
           href: '#contact-us'
@@ -547,62 +545,58 @@ export const siteContent: Record<Locale, SiteContent> = {
       eyebrow: 'Gala Bamena USA',
       title: 'Préserver la culture Bamena par la communauté, le service et la célébration.',
       description:
-        "Bamena-USA est un espace associatif à but non lucratif dédié à l'éducation culturelle, au mentorat des jeunes, aux liens familiaux et aux collectes de fonds qui transforment la fierté culturelle en impact durable pour la communauté.",
+        "Bamena-USA est une association à but non lucratif dédiée à l'éducation culturelle, au mentorat des jeunes, au renforcement des liens familiaux et aux collectes de fonds. Elle transforme la fierté culturelle en impact durable pour la communauté et rassemble les personnes originaires de Bamena vivant aux États-Unis, ainsi que leurs familles et leurs sympathisants.",
       donateCta: 'Faire un don',
       joinCta: 'Nous rejoindre',
-      programsCta: 'Découvrir les programmes',
+      programsCta: 'Découvrir nos réalisations',
       missionEyebrow: 'Notre mission',
       missionItems: [
         {
           title: 'Héritage',
-          description: "Faire vivre la langue, les récits, la musique et les traditions d'une génération à l'autre."
+          description:
+            "Faire vivre la langue, les récits, la musique et les traditions d'une génération à l'autre et dans les villes des États-Unis."
         },
         {
           title: 'Appartenance',
-          description: 'Créer des espaces de rassemblement où les familles, les aînés et les jeunes restent connectés.'
+          description:
+            'Créer des espaces de rassemblement où les familles, les aînés et les jeunes restent connectés dans les villes des États-Unis.'
         },
         {
           title: 'Service',
           description:
-            'Financer avec transparence des projets culturels, éducatifs et communautaires au service de tous.'
+            "Financer des projets culturels, éducatifs et communautaires, et nous soutenir mutuellement grâce à des programmes sociaux solides au service de toutes les personnes originaires de Bamena vivant aux États-Unis, afin qu'aucun membre de la communauté ne soit laissé de côté."
         }
       ]
     },
     programs: {
       eyebrow: 'Programmes culturels',
-      title: "Des programmes qui gardent l'héritage vivant.",
+      title: "Des actions qui gardent l'héritage vivant.",
       description:
         'Bamena-USA crée des espaces concrets pour apprendre, servir, célébrer et renforcer les liens entre générations.',
       items: [
         {
-          image: '/images/culture/gala-2026/bamena-gala-2026-01.jpg',
-          alt: 'Membres de Bamena-USA en tenue traditionnelle au gala de collecte de fonds 2026',
-          name: 'Préservation culturelle',
-          type: 'Héritage',
-          description: 'Récits, langue, musique et coutumes transmis avec dignité entre générations.'
-        },
-        {
-          image: '/images/culture/gala-2026/bamena-gala-2026-04.jpg',
-          alt: 'Femmes de Bamena-USA posant ensemble au gala de collecte de fonds 2026',
-          name: 'Mentorat des jeunes',
-          type: 'Éducation',
+          image: '/images/realization/Louh.jpg',
+          alt: "Projet de château d'eau Bamena-USA à Louh",
+          name: 'Louh',
+          type: 'Water Project',
           description:
-            'Ateliers et accompagnement pour aider les jeunes à connaître leurs racines et à avancer avec confiance.'
+            "Aider les familles à bénéficier de systèmes d'eau plus sûrs, construits, entretenus et renforcés par le soutien communautaire."
         },
         {
-          image: '/images/culture/gala-2026/bamena-gala-2026-06.jpg',
-          alt: 'Membres de la communauté célébrant au gala de collecte de fonds du projet eau Bamena',
-          name: 'Événements communautaires',
-          type: 'Célébration',
-          description: 'Galas, rencontres familiales et vitrines culturelles qui rassemblent la diaspora.'
-        },
-        {
-          image: '/images/culture/gala-2026/bamena-gala-2026-10.jpg',
-          alt: 'Invités de Bamena-USA réunis en tenue culturelle assortie',
-          name: 'Soutien communautaire',
-          type: 'Service',
+          image: '/images/realization/Pouzouh.jpg',
+          alt: "Projet de château d'eau Bamena-USA à Pouzouh",
+          name: 'Pouzouh',
+          type: 'Water Project',
           description:
-            'Projets bénévoles, accompagnement des membres et collectes de fonds qui transforment la générosité en aide concrète.'
+            "Investir dans l'accès à l'eau afin d'aider les communautés à stocker, protéger et partager une ressource locale fiable."
+        },
+        {
+          image: '/images/realization/FopLouh.jpg',
+          alt: "Projet d'infrastructure d'eau Bamena-USA achevé à Fop Louh",
+          name: 'FopLouh',
+          type: 'Water Project',
+          description:
+            "Transformer la générosité communautaire en infrastructures d'eau concrètes qui soutiennent la vie quotidienne pendant des années."
         }
       ]
     },
@@ -621,8 +615,8 @@ export const siteContent: Record<Locale, SiteContent> = {
         },
         {
           icon: BookOpenText,
-          value: '12+',
-          description: ['Programmes culturels', 'et jeunesse']
+          value: '10+',
+          description: ['Réalisations', 'au village']
         },
         {
           icon: UsersRound,
@@ -703,9 +697,9 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     contact: {
       eyebrow: 'Contact',
-      title: 'Entrer en contact avec nous.',
+      title: 'Contactez-nous.',
       description:
-        'Contactez-nous pour faire du bénévolat, parrainer un programme, poser une question sur le gala ou connecter votre famille à Bamena-USA.',
+        'Contactez-nous pour faire du bénévolat, parrainer un programme, poser une question sur le gala ou mettre votre famille en relation avec Bamena-USA.',
       imageAlt: 'Bénévoles de Bamena-USA accueillant les familles avec des ressources communautaires',
       secondaryTitle: 'Nous sommes là pour bâtir avec vous.',
       secondaryDescription:

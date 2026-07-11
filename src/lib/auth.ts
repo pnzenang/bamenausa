@@ -9,6 +9,23 @@ export const bamenaLogoUrl = 'https://res.cloudinary.com/dp8tkb7hq/image/upload/
 
 type UserMetadata = Record<string, unknown>
 
+type UserEmailAddress = {
+  emailAddress?: string | null
+}
+
+type AdminCheckUser = {
+  publicMetadata?: UserMetadata
+  privateMetadata?: UserMetadata
+  primaryEmailAddress?: UserEmailAddress | null
+  emailAddresses?: UserEmailAddress[]
+}
+
+const adminEmailAddresses = new Set(['pnzenang@gmail.com'])
+
+const normalizeEmailAddress = (emailAddress?: string | null) => {
+  return emailAddress?.trim().toLowerCase() ?? ''
+}
+
 const hasAdminRole = (metadata: UserMetadata | undefined) => {
   if (!metadata) return false
 
@@ -24,8 +41,22 @@ const hasAdminRole = (metadata: UserMetadata | undefined) => {
   )
 }
 
-export const isAdminUser = (user?: { publicMetadata?: UserMetadata; privateMetadata?: UserMetadata } | null) => {
-  return hasAdminRole(user?.publicMetadata) || hasAdminRole(user?.privateMetadata)
+const hasAdminEmailAddress = (user: AdminCheckUser | null | undefined) => {
+  const primaryEmailAddress = normalizeEmailAddress(user?.primaryEmailAddress?.emailAddress)
+
+  if (adminEmailAddresses.has(primaryEmailAddress)) {
+    return true
+  }
+
+  return (
+    user?.emailAddresses?.some(emailAddress =>
+      adminEmailAddresses.has(normalizeEmailAddress(emailAddress.emailAddress))
+    ) ?? false
+  )
+}
+
+export const isAdminUser = (user?: AdminCheckUser | null) => {
+  return hasAdminRole(user?.publicMetadata) || hasAdminRole(user?.privateMetadata) || hasAdminEmailAddress(user)
 }
 
 export const eulogyOptions = [
@@ -48,6 +79,10 @@ export const eulogyOptions = [
   {
     value: 'Tah Nji',
     label: 'Tah Nji'
+  },
+  {
+    value: 'Tah Gni',
+    label: 'Tah Gni'
   },
   {
     value: 'Tah Mbouh',

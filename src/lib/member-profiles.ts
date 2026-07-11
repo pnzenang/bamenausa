@@ -6,7 +6,6 @@ import {
   eulogyOptions,
   usStateOptions,
   type BamenaCompoundOptionValue,
-  type EulogyOptionValue,
   type UsStateOptionValue
 } from '@/lib/auth'
 
@@ -38,7 +37,7 @@ export type MemberProfile = {
   email: string
   phoneNumber: string
   imageUrl: string | null
-  eulogyPreference: EulogyOptionValue
+  eulogyPreference: string
   usState: OptionalUsState
   cameroonOriginCity: string
   bamenaCompound: OptionalBamenaCompound
@@ -54,7 +53,7 @@ export type SaveMemberProfileInput = {
   email: string
   phoneNumber?: string
   imageUrl?: string | null
-  eulogyPreference: EulogyOptionValue
+  eulogyPreference: string
   usState?: OptionalUsState
   cameroonOriginCity?: string
   bamenaCompound?: OptionalBamenaCompound
@@ -63,12 +62,12 @@ export type SaveMemberProfileInput = {
 
 let memberProfilesTablePromise: Promise<void> | null = null
 
-const getEulogyPreference = (value: string): EulogyOptionValue => {
+const getEulogyPreference = (value: string) => {
   if (value === 'Tah Nji Nana') {
     return 'Tah Nji'
   }
 
-  return eulogyOptions.some(option => option.value === value) ? (value as EulogyOptionValue) : eulogyOptions[0].value
+  return value.trim() || eulogyOptions[0].value
 }
 
 const getUsState = (value: string): OptionalUsState => {
@@ -218,6 +217,21 @@ export const listMemberProfiles = async () => {
   const rows = await listMemberProfileRows()
 
   return rows.map(mapMemberProfile)
+}
+
+export const deleteMemberProfile = async (clerkUserId: string) => {
+  const memberId = clerkUserId.trim()
+
+  if (!memberId) return
+
+  await ensureMemberProfilesTable()
+
+  await getSql()`
+    DELETE FROM member_profiles
+    WHERE clerk_user_id = ${memberId}
+  `
+
+  revalidateTag(memberProfilesCacheTag, { expire: 0 })
 }
 
 export const saveMemberProfile = async ({

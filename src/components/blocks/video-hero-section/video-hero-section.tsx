@@ -26,7 +26,7 @@ const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
   const localizedSignUpPath = getLocalizedHref(signUpPath, locale)
 
   return (
-    <section className='bg-foreground relative mb-8 min-h-[760px] overflow-hidden sm:mb-10 sm:min-h-[700px] lg:mb-14 lg:min-h-[720px]'>
+    <section className='bg-foreground relative min-h-[760px] overflow-hidden sm:min-h-[700px] lg:min-h-[720px]'>
       <Image
         src={heroImageSrc}
         alt='Bamena-USA community gathering'
@@ -41,7 +41,7 @@ const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
 
       <div className='relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex min-h-[760px] flex-col justify-center gap-10 py-16 text-center text-white sm:min-h-[700px] lg:min-h-[720px] lg:text-left'>
-          <div className='mx-auto grid w-full max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(280px,1fr)]'>
+          <div className='mx-auto grid w-full max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,2.7fr)_minmax(340px,1.15fr)]'>
             <div className='mx-auto max-w-4xl lg:mx-0'>
               <MotionPreset
                 fade

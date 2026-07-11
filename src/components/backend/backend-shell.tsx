@@ -9,6 +9,7 @@ import {
   CalendarDaysIcon,
   ChevronRightIcon,
   CreditCardIcon,
+  FileTextIcon,
   HomeIcon,
   LogOutIcon,
   SettingsIcon,
@@ -46,6 +47,11 @@ const backendNavigation = [
     icon: CalendarDaysIcon
   },
   {
+    title: 'Meetings',
+    href: '/backend/meetings',
+    icon: FileTextIcon
+  },
+  {
     title: 'Donations',
     href: '/backend/donations',
     icon: CreditCardIcon
@@ -74,7 +80,7 @@ const BackendShell = ({ children }: BackendShellProps) => {
         <nav className='flex flex-1 flex-col gap-1 px-3 py-4'>
           {backendNavigation.map(item => {
             const Icon = item.icon
-            const isActive = pathname === item.href
+            const isActive = item.href === '/backend' ? pathname === item.href : pathname.startsWith(item.href)
 
             return (
               <Link
@@ -127,7 +133,7 @@ const BackendShell = ({ children }: BackendShellProps) => {
             <nav className='flex gap-2 overflow-x-auto pb-1 lg:hidden'>
               {backendNavigation.map(item => {
                 const Icon = item.icon
-                const isActive = pathname === item.href
+                const isActive = item.href === '/backend' ? pathname === item.href : pathname.startsWith(item.href)
 
                 return (
                   <Button key={item.href} variant={isActive ? 'default' : 'outline'} size='sm' asChild>

@@ -1,30 +1,26 @@
 export const culturalPrograms = [
   {
-    image: '/images/culture/gala-2026/bamena-gala-2026-01.jpg',
-    alt: 'Bamena-USA members in traditional attire at the 2026 fundraising gala',
-    name: 'Cultural Preservation',
-    type: 'Heritage',
-    description: 'Storytelling, language, music, and customs shared with dignity across generations.'
-  },
-  {
     image: '/images/culture/gala-2026/bamena-gala-2026-04.jpg',
     alt: 'Bamena-USA women posing together at the 2026 fundraising gala',
-    name: 'Youth Mentorship',
-    type: 'Education',
-    description: 'Workshops and guidance that help young people know their roots and lead with confidence.'
+    name: 'Louh',
+    type: 'Water Project',
+    description:
+      'Helping families benefit from safer water systems built, maintained, and strengthened by community support.'
   },
   {
     image: '/images/culture/gala-2026/bamena-gala-2026-06.jpg',
     alt: 'Community members celebrating at the Bamena Water Project fundraising gala',
-    name: 'Community Events',
-    type: 'Celebration',
-    description: 'Gala nights, family gatherings, and cultural showcases that bring the diaspora together.'
+    name: 'Pouzouh',
+    type: 'Water Project',
+    description:
+      'Investing in water access that helps communities store, protect, and share a dependable local supply.'
   },
   {
     image: '/images/culture/gala-2026/bamena-gala-2026-10.jpg',
     alt: 'Bamena-USA gala guests gathered in matching cultural attire',
-    name: 'Community Support',
-    type: 'Service',
-    description: 'Volunteer projects, member care, and fundraising that turn generosity into practical help.'
+    name: 'FopLouh',
+    type: 'Water Project',
+    description:
+      'Turning community generosity into practical water infrastructure that supports daily life for years to come.'
   }
 ]

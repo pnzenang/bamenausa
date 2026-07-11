@@ -1,4 +1,4 @@
-import { CalendarDaysIcon, MapPinIcon, PlusIcon } from 'lucide-react'
+import { CalendarDaysIcon, MapPinIcon, PlusIcon, SendIcon } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -25,6 +25,19 @@ const events = [
   }
 ]
 
+const getWhatsAppAlertHref = (event: (typeof events)[number]) => {
+  const alertMessage = [
+    'Bamena-USA Alert',
+    '',
+    event.title,
+    `Date: ${event.date}`,
+    `Location: ${event.place}`,
+    `Status: ${event.status}`
+  ].join('\n')
+
+  return `https://wa.me/?text=${encodeURIComponent(alertMessage)}`
+}
+
 const EventsPage = () => {
   return (
     <div className='space-y-6'>
@@ -32,7 +45,9 @@ const EventsPage = () => {
         <div>
           <Badge variant='outline'>Events</Badge>
           <h2 className='mt-2 text-3xl font-semibold tracking-normal'>Event planning</h2>
-          <p className='text-muted-foreground mt-2'>Placeholder schedule for gala, workshops, and community events.</p>
+          <p className='text-muted-foreground mt-2'>
+            Placeholder schedule for the gala, workshops, and community events.
+          </p>
         </div>
         <Button disabled>
           <PlusIcon />
@@ -56,6 +71,17 @@ const EventsPage = () => {
                 <MapPinIcon className='text-muted-foreground size-4' />
                 {event.place}
               </p>
+              <Button variant='outline' className='w-full' asChild>
+                <a
+                  href={getWhatsAppAlertHref(event)}
+                  target='_blank'
+                  rel='noreferrer'
+                  aria-label={`Share ${event.title} alert to WhatsApp`}
+                >
+                  <SendIcon />
+                  Share to WhatsApp
+                </a>
+              </Button>
             </CardContent>
           </Card>
         ))}

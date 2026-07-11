@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import { UserButton, useUser } from '@clerk/nextjs'
-import { LogInIcon, MenuIcon } from 'lucide-react'
+import { LogInIcon, MenuIcon, ShieldCheckIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -17,7 +17,7 @@ import { ModeToggle } from '@/components/layout/mode-toggle'
 
 import { siteContent } from '@/assets/data/site-content'
 
-import { profilePath, signInPath } from '@/lib/auth'
+import { adminPath, profilePath, signInPath } from '@/lib/auth'
 import { getAlternateLocaleHref, getLocaleFromPathname, getLocaleHomeHref, getLocalizedHref } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
@@ -80,9 +80,10 @@ const useActiveSection = (sectionIds: string[]) => {
 
 type HeaderProps = {
   className?: string
+  isAdmin?: boolean
 }
 
-const Header = ({ className }: HeaderProps) => {
+const Header = ({ className, isAdmin = false }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
   const { isLoaded, isSignedIn } = useUser()
@@ -187,7 +188,28 @@ const Header = ({ className }: HeaderProps) => {
           )}
 
           {isLoaded && isSignedIn && (
-            <div className='ml-4 flex items-center'>
+            <div className='ml-4 flex items-center gap-2'>
+              {isAdmin && (
+                <>
+                  <Button variant='outline' className='rounded-full max-sm:hidden' asChild>
+                    <Link href={adminPath}>
+                      <ShieldCheckIcon />
+                      Admin
+                    </Link>
+                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant='outline' size='icon' className='rounded-full sm:hidden' asChild>
+                        <Link href={adminPath}>
+                          <ShieldCheckIcon />
+                          <span className='sr-only'>Admin</span>
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Admin</TooltipContent>
+                  </Tooltip>
+                </>
+              )}
               <UserButton
                 userProfileMode='navigation'
                 userProfileUrl={profilePath}

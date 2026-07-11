@@ -1,15 +1,15 @@
 'use client'
 
-import { MotionPreset } from '@/components/ui/motion-preset'
-import { BounceButton } from '@/components/ui/bounce-button'
-import Hand from '@/assets/svg/hand'
-import Glasses from '@/assets/svg/glasses'
+import { useEffect, useState } from 'react'
+
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState, useEffect } from 'react'
-import { m } from 'motion/react'
+
+import { BounceButton } from '@/components/ui/bounce-button'
+import { MotionPreset } from '@/components/ui/motion-preset'
+
 const HeroSection = () => {
-  const [partyTime, setPartyTime] = useState(false)
+  const [, setPartyTime] = useState(false)
   const [days, setDays] = useState(0)
   const [hours, setHours] = useState(0)
   const [minutes, setMinutes] = useState(0)
@@ -23,15 +23,19 @@ const HeroSection = () => {
       const difference = target.getTime() - now.getTime()
 
       const d = Math.floor(difference / (1000 * 60 * 60 * 24))
+
       setDays(d)
 
       const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+
       setHours(h)
 
       const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+
       setMinutes(m)
 
       const s = Math.floor((difference % (1000 * 60)) / 1000)
+
       setSeconds(s)
 
       if (d <= 0 && h <= 0 && m <= 0 && s <= 0) {
@@ -41,6 +45,7 @@ const HeroSection = () => {
 
     return () => clearInterval(interval)
   }, [])
+
   return (
     <section className='flex-1 overflow-hidden py-4 sm:py-6 lg:py-16'>
       <div className='mx-auto flex h-full max-w-7xl flex-col gap-12 px-4 sm:gap-16 sm:px-6 lg:gap-24 lg:px-8'>
@@ -124,7 +129,7 @@ const HeroSection = () => {
               >
                 <div className='flex flex-col'>
                   <span className='text-primary text-8xl font-extrabold'>{minutes}</span>
-                  <span className='text-4xl'>Minutes</span>
+                  <span className='text-4xl'>Min</span>
                 </div>
               </MotionPreset>
               <MotionPreset

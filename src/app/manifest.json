@@ -11,11 +11,6 @@
   "categories": ["education", "social", "lifestyle"],
   "icons": [
     {
-      "src": "/images/logo/BAMENA-USA.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
-    },
-    {
       "src": "/favicon/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"

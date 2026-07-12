@@ -8,6 +8,10 @@ type GaleryImage = {
   height: number
 }
 
+type DisplayGaleryImage = GaleryImage & {
+  displayIndex: number
+}
+
 type GaleryPageProps = {
   locale: Locale
 }
@@ -31,17 +35,77 @@ const galeryImageGroups = [
   createGaleryImages([44, 71], 2040, 1530)
 ]
 
-const putVerticalGaleryImagesFirst = (images: GaleryImage[]): GaleryImage[] => [
-  ...images.filter(image => image.height > image.width),
-  ...images.filter(image => image.height <= image.width)
-]
+const mixGaleryImages = (images: GaleryImage[]): GaleryImage[] => {
+  const verticalImages = images.filter(image => image.height > image.width)
+  const horizontalImages = images.filter(image => image.height <= image.width)
+  const mixedImages: GaleryImage[] = []
+  let verticalIndex = 0
+  let horizontalIndex = 0
 
-const galeryImages = putVerticalGaleryImagesFirst(galeryImageGroups.flat()).map((image, displayIndex) => ({
+  while (verticalIndex < verticalImages.length || horizontalIndex < horizontalImages.length) {
+    if (horizontalIndex < horizontalImages.length) {
+      mixedImages.push(horizontalImages[horizontalIndex])
+      horizontalIndex += 1
+    }
+
+    for (let count = 0; count < 2 && verticalIndex < verticalImages.length; count += 1) {
+      mixedImages.push(verticalImages[verticalIndex])
+      verticalIndex += 1
+    }
+  }
+
+  return mixedImages
+}
+
+const galeryImages = mixGaleryImages(galeryImageGroups.flat()).map((image, displayIndex) => ({
   ...image,
   displayIndex
 }))
 
+const justifiedRowTargetAspectRatio = 5
+
+const createJustifiedGaleryRows = (images: DisplayGaleryImage[]): DisplayGaleryImage[][] => {
+  const rows: DisplayGaleryImage[][] = []
+  let currentRow: DisplayGaleryImage[] = []
+  let currentAspectRatio = 0
+
+  images.forEach(image => {
+    const imageAspectRatio = image.width / image.height
+    const nextAspectRatio = currentAspectRatio + imageAspectRatio
+
+    if (currentRow.length > 0 && nextAspectRatio > justifiedRowTargetAspectRatio) {
+      const currentDifference = Math.abs(justifiedRowTargetAspectRatio - currentAspectRatio)
+      const nextDifference = Math.abs(justifiedRowTargetAspectRatio - nextAspectRatio)
+
+      if (nextDifference < currentDifference) {
+        rows.push([...currentRow, image])
+        currentRow = []
+        currentAspectRatio = 0
+      } else {
+        rows.push(currentRow)
+        currentRow = [image]
+        currentAspectRatio = imageAspectRatio
+      }
+
+      return
+    }
+
+    currentRow.push(image)
+    currentAspectRatio = nextAspectRatio
+  })
+
+  if (currentRow.length > 0) {
+    rows.push(currentRow)
+  }
+
+  return rows
+}
+
+const galeryImageRows = createJustifiedGaleryRows(galeryImages)
+
 const eagerImageCount = 6
+
+const getImageLoading = (displayIndex: number) => (displayIndex < eagerImageCount ? 'eager' : 'lazy')
 
 const GaleryPage = ({ locale }: GaleryPageProps) => {
   const content = publicPageContent[locale].galery
@@ -53,18 +117,33 @@ const GaleryPage = ({ locale }: GaleryPageProps) => {
         <p className='text-muted-foreground mx-auto mt-2 max-w-2xl text-base sm:text-lg'>{content.description}</p>
       </div>
 
-      <div className='w-full columns-1 gap-1 px-1 pb-6 sm:columns-2 sm:gap-1.5 sm:px-2 lg:columns-3 lg:gap-2 xl:columns-4'>
-        {galeryImages.map(image => (
-          <div key={image.src} className='bg-muted mb-1 break-inside-avoid overflow-hidden rounded-sm sm:mb-1.5 lg:mb-2'>
-            <img
-              src={image.src}
-              alt={`${content.imageAltPrefix} ${image.displayIndex + 1}`}
-              width={image.width}
-              height={image.height}
-              loading={image.displayIndex < eagerImageCount ? 'eager' : 'lazy'}
-              decoding='async'
-              className='block h-auto w-full rounded-sm'
-            />
+      <div className='flex w-full flex-col gap-1'>
+        {galeryImageRows.map(row => (
+          <div key={row.map(image => image.src).join('-')} className='flex w-full items-stretch gap-1'>
+            {row.map(image => {
+              const imageAspectRatio = image.width / image.height
+
+              return (
+                <div
+                  key={image.src}
+                  className='min-w-0 overflow-hidden'
+                  style={{
+                    aspectRatio: `${image.width} / ${image.height}`,
+                    flex: `${imageAspectRatio} 1 0`
+                  }}
+                >
+                  <img
+                    src={image.src}
+                    alt={`${content.imageAltPrefix} ${image.displayIndex + 1}`}
+                    width={image.width}
+                    height={image.height}
+                    loading={getImageLoading(image.displayIndex)}
+                    decoding='async'
+                    className='block size-full object-contain'
+                  />
+                </div>
+              )
+            })}
           </div>
         ))}
       </div>

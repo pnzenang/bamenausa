@@ -275,7 +275,7 @@ export const siteContent: Record<Locale, SiteContent> = {
         {
           title: 'Service',
           description:
-            'Fund cultural, educational, and community support projects, and support one another through strong social programs that serve everyone of Bamena descent living in the U.S., so no member of the Bamena community is left behind.'
+            'Fund cultural, educational, and community support projects, and support one another through strong social programs that serve people of Bamena descent, their families, and sympathizers living in the U.S., so no member of the Bamena community is left behind.'
         }
       ]
     },
@@ -572,7 +572,7 @@ export const siteContent: Record<Locale, SiteContent> = {
         {
           title: 'Service',
           description:
-            "Financer des projets culturels, éducatifs et communautaires, et nous soutenir mutuellement grâce à des programmes sociaux solides au service de toutes les personnes originaires de Bamena vivant aux États-Unis, afin qu'aucun membre de la communauté ne soit laissé de côté."
+            "Financer des projets culturels, éducatifs et communautaires, et nous soutenir mutuellement grâce à des programmes sociaux solides au service des personnes originaires de Bamena, de leurs familles et de leurs sympathisants vivant aux États-Unis, afin qu'aucun membre de la communauté ne soit laissé de côté."
         }
       ]
     },

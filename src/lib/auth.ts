@@ -20,7 +20,7 @@ type AdminCheckUser = {
   emailAddresses?: UserEmailAddress[]
 }
 
-const adminEmailAddresses = new Set(['pnzenang@gmail.com'])
+const adminEmailAddresses = new Set(['pnzenang@gmail.com', 'hnnjakou2011@gmail.com'])
 
 const normalizeEmailAddress = (emailAddress?: string | null) => {
   return emailAddress?.trim().toLowerCase() ?? ''

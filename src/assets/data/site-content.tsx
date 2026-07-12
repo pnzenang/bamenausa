@@ -219,6 +219,10 @@ export const siteContent: Record<Locale, SiteContent> = {
         href: '/galery'
       },
       {
+        title: 'Donate',
+        href: '/donate'
+      },
+      {
         title: 'Contact',
         href: '#contact-us'
       }
@@ -243,7 +247,7 @@ export const siteContent: Record<Locale, SiteContent> = {
         },
         {
           title: 'Donate',
-          href: '#offers'
+          href: '/donate'
         }
       ],
       nonprofitLabel: 'A 501(c)(3) organization',
@@ -428,7 +432,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           },
           offerButton: {
             text: 'Give today',
-            link: '#contact-us',
+            link: '/donate',
             className: sharedGalleryClasses.preserve.button
           }
         },
@@ -456,7 +460,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           },
           offerButton: {
             text: 'Get involved',
-            link: '#contact-us',
+            link: '/donate',
             className: sharedGalleryClasses.families.button
           }
         }
@@ -510,6 +514,10 @@ export const siteContent: Record<Locale, SiteContent> = {
         href: '/fr/galery'
       },
       {
+        title: 'Faire un don',
+        href: '/fr/donate'
+      },
+      {
         title: 'Contact',
         href: '#contact-us'
       }
@@ -534,7 +542,7 @@ export const siteContent: Record<Locale, SiteContent> = {
         },
         {
           title: 'Faire un don',
-          href: '#offers'
+          href: '/fr/donate'
         }
       ],
       nonprofitLabel: 'Une organisation 501(c)(3)',
@@ -744,7 +752,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           },
           offerButton: {
             text: "Donner aujourd'hui",
-            link: '#contact-us',
+            link: '/fr/donate',
             className: sharedGalleryClasses.preserve.button
           }
         },
@@ -772,7 +780,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           },
           offerButton: {
             text: 'Participer',
-            link: '#contact-us',
+            link: '/fr/donate',
             className: sharedGalleryClasses.families.button
           }
         }

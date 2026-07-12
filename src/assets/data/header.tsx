@@ -22,6 +22,10 @@ export const navigationData: NavigationSection[] = [
     href: '/necrology'
   },
   {
+    title: 'Donate',
+    href: '/donate'
+  },
+  {
     title: 'Contact',
     href: '#contact-us'
   }

@@ -13,6 +13,8 @@ const localizablePagePaths = new Set([
   '/necrology',
   '/meetings',
   '/meetings/maryland',
+  '/donate',
+  '/donate/thank-you',
   '/login',
   '/signup',
   '/sign-in',

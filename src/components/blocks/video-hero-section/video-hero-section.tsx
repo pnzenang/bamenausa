@@ -24,6 +24,7 @@ const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const localizedSignUpPath = getLocalizedHref(signUpPath, locale)
+  const localizedDonatePath = getLocalizedHref('/donate', locale)
 
   return (
     <section className='bg-foreground relative min-h-[760px] overflow-hidden sm:min-h-[700px] lg:min-h-[720px]'>
@@ -88,13 +89,7 @@ const VideoHeroSection = ({ copy }: VideoHeroSectionProps) => {
                     asChild
                     className='group relative w-fit overflow-hidden rounded-full text-base before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] has-[>svg]:px-6'
                   >
-                    <Link
-                      href='#offers'
-                      onClick={e => {
-                        e.preventDefault()
-                        scrollToSection('offers')
-                      }}
-                    >
+                    <Link href={localizedDonatePath}>
                       {copy.donateCta}
                       <HeartHandshakeIcon />
                     </Link>

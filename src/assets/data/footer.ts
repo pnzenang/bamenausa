@@ -21,6 +21,6 @@ export const footerData = [
   },
   {
     title: 'Donate',
-    href: '#offers'
+    href: '/donate'
   }
 ]

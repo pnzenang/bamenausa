@@ -8,10 +8,6 @@ type GaleryImage = {
   height: number
 }
 
-type DisplayGaleryImage = GaleryImage & {
-  displayIndex: number
-}
-
 type GaleryPageProps = {
   locale: Locale
 }
@@ -23,6 +19,9 @@ const createGaleryImages = (imageNumbers: number[], width: number, height: numbe
     height
   }))
 
+const createImageNumberRange = (start: number, end: number) =>
+  Array.from({ length: end - start + 1 }, (_, index) => start + index)
+
 const galeryImageGroups = [
   createGaleryImages(
     [1, 2, 5, 6, 7, 9, 11, 12, 13, 15, 18, 19, 20, 21, 23, 24, 25, 26, 27, 29, 30, 31, 32, 34, 35, 36, 37, 76],
@@ -32,76 +31,51 @@ const galeryImageGroups = [
   createGaleryImages([43, 72, 73], 1530, 2040),
   createGaleryImages([17], 1325, 786),
   createGaleryImages([39, 40, 53, 52, 48, 49, 50, 51, 64, 65, 66, 67, 68, 69, 70, 74, 75], 2040, 1148),
-  createGaleryImages([44, 71], 2040, 1530)
+  createGaleryImages([44, 71], 2040, 1530),
+  createGaleryImages([80, 87, 88], 1600, 1066),
+  createGaleryImages([78, 82, 83, 89, 90], 1066, 1600),
+  createGaleryImages([81], 1028, 1353),
+  createGaleryImages([86, ...createImageNumberRange(92, 99), 128], 2400, 3600),
+  createGaleryImages(
+    [
+      ...createImageNumberRange(100, 110),
+      ...createImageNumberRange(120, 127),
+      ...createImageNumberRange(129, 139),
+      141
+    ],
+    3600,
+    2400
+  ),
+  createGaleryImages([111], 954, 1353),
+  createGaleryImages([112, 118, 119, 142, 143, 144, 145, 146, 148, 150], 2000, 1333),
+  createGaleryImages([113], 964, 1353),
+  createGaleryImages([114], 936, 1353),
+  createGaleryImages([115], 902, 1353),
+  createGaleryImages([116], 1147, 1353),
+  createGaleryImages([117], 1283, 1353),
+  createGaleryImages([147], 2000, 1285),
+  createGaleryImages([149], 1181, 1353),
+  createGaleryImages([151], 2000, 1329),
+  createGaleryImages([152], 1536, 1353)
 ]
 
-const mixGaleryImages = (images: GaleryImage[]): GaleryImage[] => {
-  const verticalImages = images.filter(image => image.height > image.width)
-  const horizontalImages = images.filter(image => image.height <= image.width)
-  const mixedImages: GaleryImage[] = []
-  let verticalIndex = 0
-  let horizontalIndex = 0
+const getStableImageSortValue = (src: string) => {
+  let hash = 0
 
-  while (verticalIndex < verticalImages.length || horizontalIndex < horizontalImages.length) {
-    if (horizontalIndex < horizontalImages.length) {
-      mixedImages.push(horizontalImages[horizontalIndex])
-      horizontalIndex += 1
-    }
-
-    for (let count = 0; count < 2 && verticalIndex < verticalImages.length; count += 1) {
-      mixedImages.push(verticalImages[verticalIndex])
-      verticalIndex += 1
-    }
+  for (const character of src) {
+    hash = (hash * 31 + character.charCodeAt(0)) % 1000000007
   }
 
-  return mixedImages
+  return hash
 }
 
-const galeryImages = mixGaleryImages(galeryImageGroups.flat()).map((image, displayIndex) => ({
+const randomizeGaleryImages = (images: GaleryImage[]) =>
+  [...images].sort((imageA, imageB) => getStableImageSortValue(imageA.src) - getStableImageSortValue(imageB.src))
+
+const galeryImages = randomizeGaleryImages(galeryImageGroups.flat()).map((image, displayIndex) => ({
   ...image,
   displayIndex
 }))
-
-const justifiedRowTargetAspectRatio = 5
-
-const createJustifiedGaleryRows = (images: DisplayGaleryImage[]): DisplayGaleryImage[][] => {
-  const rows: DisplayGaleryImage[][] = []
-  let currentRow: DisplayGaleryImage[] = []
-  let currentAspectRatio = 0
-
-  images.forEach(image => {
-    const imageAspectRatio = image.width / image.height
-    const nextAspectRatio = currentAspectRatio + imageAspectRatio
-
-    if (currentRow.length > 0 && nextAspectRatio > justifiedRowTargetAspectRatio) {
-      const currentDifference = Math.abs(justifiedRowTargetAspectRatio - currentAspectRatio)
-      const nextDifference = Math.abs(justifiedRowTargetAspectRatio - nextAspectRatio)
-
-      if (nextDifference < currentDifference) {
-        rows.push([...currentRow, image])
-        currentRow = []
-        currentAspectRatio = 0
-      } else {
-        rows.push(currentRow)
-        currentRow = [image]
-        currentAspectRatio = imageAspectRatio
-      }
-
-      return
-    }
-
-    currentRow.push(image)
-    currentAspectRatio = nextAspectRatio
-  })
-
-  if (currentRow.length > 0) {
-    rows.push(currentRow)
-  }
-
-  return rows
-}
-
-const galeryImageRows = createJustifiedGaleryRows(galeryImages)
 
 const eagerImageCount = 6
 
@@ -117,34 +91,18 @@ const GaleryPage = ({ locale }: GaleryPageProps) => {
         <p className='text-muted-foreground mx-auto mt-2 max-w-2xl text-base sm:text-lg'>{content.description}</p>
       </div>
 
-      <div className='flex w-full flex-col gap-1'>
-        {galeryImageRows.map(row => (
-          <div key={row.map(image => image.src).join('-')} className='flex w-full items-stretch gap-1'>
-            {row.map(image => {
-              const imageAspectRatio = image.width / image.height
-
-              return (
-                <div
-                  key={image.src}
-                  className='min-w-0 overflow-hidden'
-                  style={{
-                    aspectRatio: `${image.width} / ${image.height}`,
-                    flex: `${imageAspectRatio} 1 0`
-                  }}
-                >
-                  <img
-                    src={image.src}
-                    alt={`${content.imageAltPrefix} ${image.displayIndex + 1}`}
-                    width={image.width}
-                    height={image.height}
-                    loading={getImageLoading(image.displayIndex)}
-                    decoding='async'
-                    className='block size-full object-contain'
-                  />
-                </div>
-              )
-            })}
-          </div>
+      <div className='columns-2 gap-2 sm:columns-3 lg:columns-4 xl:columns-5'>
+        {galeryImages.map(image => (
+          <img
+            key={image.src}
+            src={image.src}
+            alt={`${content.imageAltPrefix} ${image.displayIndex + 1}`}
+            width={image.width}
+            height={image.height}
+            loading={getImageLoading(image.displayIndex)}
+            decoding='async'
+            className='mb-2 block h-auto w-full break-inside-avoid'
+          />
         ))}
       </div>
     </section>

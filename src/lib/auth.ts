@@ -97,6 +97,10 @@ export const eulogyOptions = [
     label: 'Tah Waah'
   },
   {
+    value: 'Tah Zuit',
+    label: 'Tah Zuit'
+  },
+  {
     value: 'Tadieuh',
     label: 'Tadieuh'
   },

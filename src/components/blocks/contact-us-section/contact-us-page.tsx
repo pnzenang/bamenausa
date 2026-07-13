@@ -40,7 +40,7 @@ const ContactUs = ({ contactInfo, copy }: ContactUsProps) => {
 
         <div className='grid items-center gap-12 lg:grid-cols-2'>
           <img
-            src='/images/galery/galery41.jpg'
+            src='/images/galery/speech.jpg'
             alt={copy.imageAlt}
             loading='lazy'
             decoding='async'

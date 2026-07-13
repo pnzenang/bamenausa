@@ -304,7 +304,7 @@ const PublicMemberCard = ({
   labels: MemberDirectoryListLabels
 }) => {
   const fullName = getMemberFullName(member)
-  const imageUrl = member.imageUrl ?? '/favicon/android-chrome-192x192.png'
+  const imageUrl = member.imageUrl ?? '/favicon/bamenausa-android-chrome-192.png'
   const eulogies = getEulogyLabel(member.eulogyPreference)
   const quarter = getBamenaCompoundLabel(member.bamenaCompound)
   const state = getUsStateLabel(member.usState)
@@ -347,7 +347,7 @@ const FullMemberCard = ({
   labels: MemberDirectoryListLabels
 }) => {
   const fullName = getMemberFullName(member)
-  const imageUrl = member.imageUrl ?? '/favicon/android-chrome-192x192.png'
+  const imageUrl = member.imageUrl ?? '/favicon/bamenausa-android-chrome-192.png'
   const eulogies = getEulogyLabel(member.eulogyPreference)
   const quarter = getBamenaCompoundLabel(member.bamenaCompound)
   const state = getUsStateLabel(member.usState)
@@ -456,7 +456,7 @@ const AdminMemberTableRow = ({
   deleteMemberAction: (formData: FormData) => Promise<void>
 }) => {
   const fullName = getMemberFullName(member)
-  const imageUrl = member.imageUrl ?? '/favicon/android-chrome-192x192.png'
+  const imageUrl = member.imageUrl ?? '/favicon/bamenausa-android-chrome-192.png'
   const eulogies = getEulogyLabel(member.eulogyPreference)
   const quarter = getBamenaCompoundLabel(member.bamenaCompound) || labels.noQuarter
   const state = getUsStateLabel(member.usState) || labels.noState

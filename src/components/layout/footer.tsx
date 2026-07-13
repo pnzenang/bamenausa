@@ -55,7 +55,7 @@ const Footer = () => {
         </div>
 
         <div className='flex items-center gap-4'>
-          <h1>{content.footer.nonprofitLabel}</h1>
+          <span>{content.footer.nonprofitLabel}</span>
         </div>
       </div>
 

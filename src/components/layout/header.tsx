@@ -145,11 +145,12 @@ const Header = ({ className, isAdmin = false }: HeaderProps) => {
         {/* Logo */}
         <Link href={`${homeHref}#home`} className='flex items-center gap-2'>
           <BamenaLogo />
-          <h1 className='text-primary hidden text-3xl font-extrabold sm:block'>
+          <span className='text-primary hidden text-3xl font-extrabold sm:block'>
             <span>Bamena</span>
-            <span className='px-1 text-white'>-</span>
-            <span className='text-red-500'>USA</span>
-          </h1>
+
+            <span className='pl-2 text-red-500'>USA,</span>
+            <span className='pl-2 text-black'>Inc</span>
+          </span>
         </Link>
 
         {/* Navigation */}

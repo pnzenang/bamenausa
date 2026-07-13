@@ -5,7 +5,7 @@ export const accountPath = '/account'
 export const membersPath = '/members'
 export const fullMembersPath = '/members/full'
 export const adminPath = '/backend'
-export const bamenaLogoUrl = '/images/logo/BAMENA-USA.svg'
+export const bamenaLogoUrl = '/images/logo/bamenausa.svg'
 
 type UserMetadata = Record<string, unknown>
 

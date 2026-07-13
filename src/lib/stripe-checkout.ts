@@ -1,4 +1,5 @@
 import type { Locale } from '@/lib/i18n'
+import { getSiteUrl } from '@/lib/site-url'
 
 export type DonationCheckoutFrequency = 'one-time' | 'monthly'
 
@@ -77,9 +78,7 @@ const getValidatedStripeSecretKey = () => {
   return stripeSecretKey
 }
 
-const getAppUrl = () => {
-  return (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '')
-}
+const getAppUrl = getSiteUrl
 
 const getDonatePath = (locale: Locale) => {
   return locale === 'fr' ? '/fr/donate' : '/donate'

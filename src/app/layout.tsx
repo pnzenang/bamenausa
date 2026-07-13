@@ -9,6 +9,8 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import LanguageDocumentSync from '@/components/language-document-sync'
 
 import { profilePath, signInPath, signUpPath } from '@/lib/auth'
+import { getRequestLocalePreference } from '@/lib/server-i18n'
+import { getSiteUrl } from '@/lib/site-url'
 import { cn } from '@/lib/utils'
 
 import './globals.css'
@@ -34,6 +36,8 @@ const kaushanScript = Kaushan_Script({
   subsets: ['latin']
 })
 
+const siteUrl = getSiteUrl()
+
 export const metadata: Metadata = {
   title: {
     template: '%s - Bamena-USA',
@@ -46,44 +50,39 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/favicon/favicon-16x16.png',
+        url: '/favicon/bamenausa-favicon-16.png',
         sizes: '16x16',
         type: 'image/png'
       },
       {
-        url: '/favicon/favicon-32x32.png',
+        url: '/favicon/bamenausa-favicon-32.png',
         sizes: '32x32',
         type: 'image/png'
-      },
-      {
-        url: '/favicon/favicon.ico',
-        sizes: '48x48',
-        type: 'image/x-icon'
       }
     ],
     apple: [
       {
-        url: '/favicon/apple-touch-icon.png',
+        url: '/favicon/bamenausa-apple-touch-icon.png',
         sizes: '180x180',
         type: 'image/png'
       }
     ],
     other: [
       {
-        url: '/favicon/android-chrome-192x192.png',
+        url: '/favicon/bamenausa-android-chrome-192.png',
         rel: 'icon',
         sizes: '192x192',
         type: 'image/png'
       },
       {
-        url: '/favicon/android-chrome-512x512.png',
+        url: '/favicon/bamenausa-android-chrome-512.png',
         rel: 'icon',
         sizes: '512x512',
         type: 'image/png'
       }
     ]
   },
-  metadataBase: new URL(`${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}`),
+  metadataBase: new URL(siteUrl),
   openGraph: {
     title: {
       template: '%s - Bamena-USA',
@@ -93,7 +92,7 @@ export const metadata: Metadata = {
       'Preserving Bamena heritage, strengthening families, mentoring youth, and celebrating culture through nonprofit community programs.',
     type: 'website',
     siteName: 'Bamena-USA',
-    url: `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}`,
+    url: siteUrl,
     images: [
       {
         url: '/images/culture/gala-2026/bamena-gala-home.jpg',
@@ -115,10 +114,12 @@ export const metadata: Metadata = {
   }
 }
 
-const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
+const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
+  const locale = await getRequestLocalePreference()
+
   return (
     <html
-      lang='en'
+      lang={locale}
       className={cn(
         outfitSans.variable,
         merriweatherSerif.variable,

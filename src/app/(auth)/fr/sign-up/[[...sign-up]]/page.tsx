@@ -4,6 +4,10 @@ import LocalizedSignUpPage from '@/components/auth/sign-up-page'
 
 export const metadata: Metadata = {
   title: 'Inscription',
+  robots: {
+    index: false,
+    follow: false
+  },
   alternates: {
     canonical: '/fr/sign-up',
     languages: {

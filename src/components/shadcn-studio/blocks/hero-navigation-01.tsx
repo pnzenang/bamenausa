@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 
 import { useMedia } from 'react-use'
 import { ChevronRightIcon, CircleSmallIcon, MenuIcon } from 'lucide-react'
@@ -200,18 +200,27 @@ const HeroNavigation01SmallScreen = ({
   screenSize?: number
   logo?: React.ReactNode
 }) => {
-  const [open, setOpen] = useState(false)
   const isMobile = useMedia(`(max-width: ${screenSize}px)`, false)
+
+  if (!isMobile) return null
+
+  return <HeroNavigation01MobileSheet navigationData={navigationData} triggerClassName={triggerClassName} logo={logo} />
+}
+
+const HeroNavigation01MobileSheet = ({
+  navigationData,
+  triggerClassName,
+  logo
+}: {
+  navigationData: Navigation[]
+  triggerClassName?: string
+  logo?: React.ReactNode
+}) => {
+  const [open, setOpen] = useState(false)
 
   const handleLinkClick = () => {
     setOpen(false)
   }
-
-  useEffect(() => {
-    if (!isMobile) {
-      setOpen(false)
-    }
-  }, [isMobile])
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

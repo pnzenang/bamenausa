@@ -4,6 +4,10 @@ import LocalizedSignInPage from '@/components/auth/sign-in-page'
 
 export const metadata: Metadata = {
   title: 'Connexion',
+  robots: {
+    index: false,
+    follow: false
+  },
   alternates: {
     canonical: '/fr/sign-in',
     languages: {

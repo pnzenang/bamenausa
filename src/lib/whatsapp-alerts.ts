@@ -1,4 +1,5 @@
 import { getMarylandMeetingDateSlug, marylandMeetingAddress } from '@/lib/maryland-meetings'
+import { getSiteUrl } from '@/lib/site-url'
 
 export type MarylandMeetingWhatsAppAlertType = 'reminder' | 'agenda' | 'change' | 'report'
 
@@ -8,7 +9,7 @@ export type MarylandMeetingWhatsAppAlertLink = {
   href: string
 }
 
-const siteUrl = (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').replace(/\/$/, '')
+const siteUrl = getSiteUrl()
 
 const marylandMeetingTime = '7:00 PM - 9:00 PM'
 

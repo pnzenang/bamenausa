@@ -211,10 +211,6 @@ export const siteContent: Record<Locale, SiteContent> = {
         href: '/members'
       },
       {
-        title: 'Necrology',
-        href: '/necrology'
-      },
-      {
         title: 'Gallery',
         href: '/galery'
       },
@@ -504,10 +500,6 @@ export const siteContent: Record<Locale, SiteContent> = {
       {
         title: 'Membres',
         href: '/fr/members'
-      },
-      {
-        title: 'Nécrologie',
-        href: '/fr/necrology'
       },
       {
         title: 'Galerie',

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 import { getMarylandMeetingDateSlug, marylandMeetingDates } from '@/lib/maryland-meetings'
+import { getAbsoluteUrl } from '@/lib/site-url'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const marylandMeetingDetailRoutes = marylandMeetingDates.flatMap(date => {
@@ -19,6 +20,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/fr',
     '/members',
     '/fr/members',
+    '/donate',
+    '/fr/donate',
     '/meetings',
     '/fr/meetings',
     '/meetings/maryland',
@@ -31,6 +34,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   return routes.map(route => ({
-    url: `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}${route}`
+    url: getAbsoluteUrl(route || '/')
   }))
 }

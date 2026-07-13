@@ -9,7 +9,7 @@ type BamenaLogoProps = {
 const BamenaLogo = ({ className }: BamenaLogoProps) => {
   return (
     <Image
-      src='/images/logo/BAMENA-USA.svg'
+      src='/images/logo/bamenausa.svg'
       alt='Bamena-USA logo'
       width={500}
       height={500}

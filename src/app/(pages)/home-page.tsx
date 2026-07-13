@@ -9,12 +9,13 @@ import VideoHeroSection from '@/components/blocks/video-hero-section/video-hero-
 import { getSiteContent } from '@/assets/data/site-content'
 
 import type { Locale } from '@/lib/i18n'
+import { getSiteUrl } from '@/lib/site-url'
 
 type HomePageProps = {
   locale: Locale
 }
 
-const siteUrl = (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').replace(/\/$/, '')
+const siteUrl = getSiteUrl()
 
 const buildJsonLd = (locale: Locale) => {
   const content = getSiteContent(locale)

@@ -50,6 +50,9 @@ type PublicNecrologyContent = {
   placeholderDescription: string
 }
 
+const marylandMeetingsHref = '/meetings/maryland'
+const frenchMarylandMeetingsHref = '/fr/meetings/maryland'
+
 export const publicPageContent: Record<
   Locale,
   {
@@ -126,64 +129,73 @@ export const publicPageContent: Record<
           name: 'Maryland',
           region: 'Mid-Atlantic',
           description: 'A meeting hub for members around Maryland and nearby communities.',
-          href: '/meetings/maryland'
+          href: marylandMeetingsHref
         },
         {
           name: 'Virginia',
           region: 'Mid-Atlantic',
           description: 'A state group for families and members gathering across Virginia.',
-          href: '/meetings/maryland'
+          href: marylandMeetingsHref
         },
         {
           name: 'District of Columbia',
           region: 'DMV area',
           description: 'A central meeting area for members in and around Washington, DC.',
-          href: '/meetings/maryland'
+          href: marylandMeetingsHref
         },
         {
           name: 'Georgia',
           region: 'Southeast',
-          description: 'A meeting point for Bamena-USA members living across Georgia.'
+          description: 'A meeting point for Bamena-USA members living across Georgia.',
+          href: marylandMeetingsHref
         },
         {
           name: 'Texas',
           region: 'South Central',
-          description: 'A state community for members coordinating gatherings across Texas.'
+          description: 'A state community for members coordinating gatherings across Texas.',
+          href: marylandMeetingsHref
         },
         {
           name: 'California',
           region: 'West Coast',
-          description: 'A meeting group for members and families throughout California.'
+          description: 'A meeting group for members and families throughout California.',
+          href: marylandMeetingsHref
         },
         {
           name: 'New York',
           region: 'Northeast',
-          description: 'A meeting area for members in New York and nearby states.'
+          description: 'A meeting area for members in New York and nearby states.',
+          href: marylandMeetingsHref
         },
         {
           name: 'Illinois',
           region: 'Midwest',
-          description: 'A meeting group for Bamena-USA members and families across Illinois.'
+          description: 'A meeting group for Bamena-USA members and families across Illinois.',
+          href: marylandMeetingsHref
         },
         {
           name: 'Ohio',
           region: 'Midwest',
-          description: 'A meeting group for members and families coordinating across Ohio.'
+          description: 'A meeting group for members and families coordinating across Ohio.',
+          href: marylandMeetingsHref
         },
         {
           name: 'Indiana',
           region: 'Midwest',
-          description: 'A state community for Bamena-USA members connecting in Indiana.'
+          description: 'A state community for Bamena-USA members connecting in Indiana.',
+          href: marylandMeetingsHref
         },
         {
           name: 'Michigan',
           region: 'Midwest',
-          description: 'A meeting area for members and families gathering throughout Michigan.'
+          description: 'A meeting area for members and families gathering throughout Michigan.',
+          href: marylandMeetingsHref
         },
         {
           name: 'North Carolina',
           region: 'Southeast',
-          description: 'A state group for members connecting across North Carolina.'
+          description: 'A state group for members connecting across North Carolina.',
+          href: marylandMeetingsHref
         }
       ]
     },
@@ -269,64 +281,73 @@ export const publicPageContent: Record<
           name: 'Maryland',
           region: 'Moyen-Atlantique',
           description: 'Un point de réunion pour les membres du Maryland et des communautés voisines.',
-          href: '/fr/meetings/maryland'
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'Virginie',
           region: 'Moyen-Atlantique',
           description: 'Un groupe d’État pour les familles et membres qui se réunissent en Virginie.',
-          href: '/fr/meetings/maryland'
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'District de Columbia',
           region: 'Zone DMV',
           description: 'Une zone centrale de réunion pour les membres autour de Washington, DC.',
-          href: '/fr/meetings/maryland'
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'Géorgie',
           region: 'Sud-Est',
-          description: 'Un point de rencontre pour les membres Bamena-USA vivant en Géorgie.'
+          description: 'Un point de rencontre pour les membres Bamena-USA vivant en Géorgie.',
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'Texas',
           region: 'Centre-Sud',
-          description: 'Une communauté d’État pour coordonner les réunions au Texas.'
+          description: 'Une communauté d’État pour coordonner les réunions au Texas.',
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'Californie',
           region: 'Côte Ouest',
-          description: 'Un groupe de réunion pour les membres et familles en Californie.'
+          description: 'Un groupe de réunion pour les membres et familles en Californie.',
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'New York',
           region: 'Nord-Est',
-          description: 'Une zone de réunion pour les membres de New York et des États voisins.'
+          description: 'Une zone de réunion pour les membres de New York et des États voisins.',
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'Illinois',
           region: 'Centre-Ouest',
-          description: 'Un groupe de réunion pour les membres et familles Bamena-USA en Illinois.'
+          description: 'Un groupe de réunion pour les membres et familles Bamena-USA en Illinois.',
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'Ohio',
           region: 'Centre-Ouest',
-          description: 'Un groupe de réunion pour les membres et familles qui s’organisent en Ohio.'
+          description: 'Un groupe de réunion pour les membres et familles qui s’organisent en Ohio.',
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'Indiana',
           region: 'Centre-Ouest',
-          description: 'Une communauté d’État pour les membres Bamena-USA qui se connectent en Indiana.'
+          description: 'Une communauté d’État pour les membres Bamena-USA qui se connectent en Indiana.',
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'Michigan',
           region: 'Centre-Ouest',
-          description: 'Une zone de réunion pour les membres et familles qui se réunissent au Michigan.'
+          description: 'Une zone de réunion pour les membres et familles qui se réunissent au Michigan.',
+          href: frenchMarylandMeetingsHref
         },
         {
           name: 'Caroline du Nord',
           region: 'Sud-Est',
-          description: 'Un groupe d’État pour les membres qui se connectent en Caroline du Nord.'
+          description: 'Un groupe d’État pour les membres qui se connectent en Caroline du Nord.',
+          href: frenchMarylandMeetingsHref
         }
       ]
     },

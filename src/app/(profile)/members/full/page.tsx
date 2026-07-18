@@ -4,6 +4,7 @@ import { MemberDirectoryList, type MemberDirectoryListMember } from '@/component
 import { Badge } from '@/components/ui/badge'
 
 import { listMemberProfilesWithTimeout } from '@/lib/member-profiles'
+import { listPraiseOptionsWithFallback } from '@/lib/praise-options'
 
 export const metadata: Metadata = {
   title: 'Full Members List'
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 const FullMembersDirectory = async () => {
   let members: Awaited<ReturnType<typeof listMemberProfilesWithTimeout>> = []
   let membersError = false
+  const praiseOptions = await listPraiseOptionsWithFallback()
 
   try {
     members = await listMemberProfilesWithTimeout()
@@ -40,7 +42,7 @@ const FullMembersDirectory = async () => {
         </p>
       )}
 
-      <MemberDirectoryList members={directoryMembers} variant='full' />
+      <MemberDirectoryList members={directoryMembers} variant='full' praiseOptions={praiseOptions} />
     </>
   )
 }

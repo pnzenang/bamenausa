@@ -11,7 +11,6 @@ import { Input } from '@/components/ui/input'
 
 import {
   bamenaCompoundOptions,
-  eulogyOptions,
   fullMembersPath,
   signInPath,
   usStateOptions,
@@ -19,6 +18,7 @@ import {
   type UsStateOptionValue
 } from '@/lib/auth'
 import { getMemberProfile, saveMemberProfile } from '@/lib/member-profiles'
+import { isKnownPraiseOption, listPraiseOptionsWithFallback, type PraiseOption } from '@/lib/praise-options'
 
 export const metadata: Metadata = {
   title: 'Bamena-USA Profile'
@@ -45,14 +45,14 @@ type ProfilePageProps = {
 const selectClassName =
   'border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 h-9 w-full rounded-md border px-3 text-sm shadow-xs outline-none focus-visible:ring-[3px]'
 
-const isKnownEulogyPreference = (value: string) => {
-  return eulogyOptions.some(option => option.value === value)
+const isKnownEulogyPreference = (value: string, praiseOptions: readonly PraiseOption[]) => {
+  return isKnownPraiseOption(value, praiseOptions)
 }
 
-const getEulogyPreference = (value: FormDataEntryValue | null): string => {
+const getEulogyPreference = (value: FormDataEntryValue | null, praiseOptions: readonly PraiseOption[]): string => {
   const preference = String(value ?? '').trim()
 
-  return isKnownEulogyPreference(preference) ? preference : ''
+  return isKnownEulogyPreference(preference, praiseOptions) ? preference : ''
 }
 
 const getUsState = (value: FormDataEntryValue | null): UsStateOptionValue | '' => {
@@ -79,8 +79,9 @@ const saveProfile = async (formData: FormData) => {
 
   const firstName = String(formData.get('firstName') ?? '').trim()
   const lastName = String(formData.get('lastName') ?? '').trim()
+  const praiseOptions = await listPraiseOptionsWithFallback()
   const eulogyPreferenceValue = formData.get('eulogyPreference')
-  const eulogyPreference = getEulogyPreference(eulogyPreferenceValue)
+  const eulogyPreference = getEulogyPreference(eulogyPreferenceValue, praiseOptions)
   const phoneNumber = String(formData.get('phoneNumber') ?? '').trim()
   const usState = getUsState(formData.get('usState'))
   const cameroonOriginCity = String(formData.get('cameroonOriginCity') ?? '').trim()
@@ -165,13 +166,15 @@ const ProfilePage = async ({ searchParams }: ProfilePageProps) => {
   const email = user.primaryEmailAddress?.emailAddress ?? storedProfile?.email ?? ''
   const phoneNumber = storedProfile?.phoneNumber ?? bamenaProfile?.phoneNumber ?? ''
   const profileImageUrl = storedProfile?.imageUrl ?? user.imageUrl
+  const praiseOptions = await listPraiseOptionsWithFallback()
+  const defaultEulogyPreference = praiseOptions[0]?.value ?? ''
 
   const selectedEulogyPreference =
-    storedProfile?.eulogyPreference ?? bamenaProfile?.eulogyPreference ?? eulogyOptions[0].value
+    storedProfile?.eulogyPreference ?? bamenaProfile?.eulogyPreference ?? defaultEulogyPreference
 
-  const selectedEulogyOption = isKnownEulogyPreference(selectedEulogyPreference)
+  const selectedEulogyOption = isKnownEulogyPreference(selectedEulogyPreference, praiseOptions)
     ? selectedEulogyPreference
-    : eulogyOptions[0].value
+    : defaultEulogyPreference
 
   const selectedUsState = storedProfile?.usState ?? bamenaProfile?.usState ?? ''
   const cameroonOriginCity = storedProfile?.cameroonOriginCity ?? bamenaProfile?.cameroonOriginCity ?? ''
@@ -302,7 +305,7 @@ const ProfilePage = async ({ searchParams }: ProfilePageProps) => {
                   className={selectClassName}
                   required
                 >
-                  {eulogyOptions.map(option => (
+                  {praiseOptions.map(option => (
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>

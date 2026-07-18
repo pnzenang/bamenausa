@@ -5,6 +5,7 @@ import { publicPageContent } from '@/assets/data/public-pages'
 
 import type { Locale } from '@/lib/i18n'
 import { listMemberProfilesWithTimeout } from '@/lib/member-profiles'
+import { listPraiseOptionsWithFallback } from '@/lib/praise-options'
 
 type PublicMembersDirectoryProps = {
   locale: Locale
@@ -18,6 +19,7 @@ const PublicMembersDirectory = async ({ locale }: PublicMembersDirectoryProps) =
   const content = publicPageContent[locale].members
   let members: Awaited<ReturnType<typeof listMemberProfilesWithTimeout>> = []
   let membersError = false
+  const praiseOptions = await listPraiseOptionsWithFallback()
 
   try {
     members = await listMemberProfilesWithTimeout()
@@ -44,7 +46,12 @@ const PublicMembersDirectory = async ({ locale }: PublicMembersDirectoryProps) =
         </p>
       )}
 
-      <MemberDirectoryList members={directoryMembers} variant='public' labels={content.directoryLabels} />
+      <MemberDirectoryList
+        members={directoryMembers}
+        variant='public'
+        labels={content.directoryLabels}
+        praiseOptions={praiseOptions}
+      />
     </>
   )
 }

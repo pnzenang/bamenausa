@@ -1,11 +1,50 @@
-import { SaveIcon, SettingsIcon } from 'lucide-react'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+import { currentUser } from '@clerk/nextjs/server'
+import { ListChecksIcon, SaveIcon, SettingsIcon } from 'lucide-react'
 
+import PraiseOptionsEditorForm from '@/components/backend/praise-options-editor-form'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 
-const SettingsPage = () => {
+import { isAdminUser } from '@/lib/auth'
+import { listPraiseOptionsWithFallback, savePraiseOptions } from '@/lib/praise-options'
+
+type SettingsPageProps = {
+  searchParams?: Promise<{
+    praises?: string
+  }>
+}
+
+const savePraiseOptionsAction = async (formData: FormData) => {
+  'use server'
+
+  const user = await currentUser()
+
+  if (!isAdminUser(user)) {
+    throw new Error('Unauthorized')
+  }
+
+  const labels = formData.getAll('labels').map(label => (typeof label === 'string' ? label : ''))
+
+  await savePraiseOptions(labels)
+
+  revalidatePath('/backend/settings')
+  revalidatePath('/profile')
+  revalidatePath('/members')
+  revalidatePath('/fr/members')
+  revalidatePath('/members/full')
+  revalidatePath('/backend/members')
+
+  redirect('/backend/settings?praises=saved')
+}
+
+const SettingsPage = async ({ searchParams }: SettingsPageProps) => {
+  const praiseOptions = await listPraiseOptionsWithFallback()
+  const resolvedSearchParams = await searchParams
+
   return (
     <div className='space-y-6'>
       <div>
@@ -45,6 +84,24 @@ const SettingsPage = () => {
               </Button>
             </div>
           </form>
+        </CardContent>
+      </Card>
+
+      <Card className='max-w-3xl rounded-md'>
+        <CardHeader>
+          <CardTitle className='flex items-center gap-2'>
+            <ListChecksIcon className='size-5' />
+            Praise preferences
+          </CardTitle>
+          <CardDescription>Manage the praise names shown in member profiles and directory cards.</CardDescription>
+        </CardHeader>
+        <CardContent className='space-y-4'>
+          {resolvedSearchParams?.praises === 'saved' && (
+            <p className='border-primary/30 bg-primary/10 rounded-md border px-4 py-3 text-sm font-medium'>
+              Praise preferences saved.
+            </p>
+          )}
+          <PraiseOptionsEditorForm options={praiseOptions} saveAction={savePraiseOptionsAction} />
         </CardContent>
       </Card>
     </div>

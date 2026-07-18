@@ -28,6 +28,7 @@ import {
   type MemberDirectoryFilters,
   type MemberDirectoryMember
 } from '@/lib/member-directory'
+import type { PraiseOption } from '@/lib/praise-options'
 
 export type MemberDirectoryListMember = MemberDirectoryMember & {
   clerkUserId: string
@@ -42,6 +43,7 @@ type MemberDirectoryListProps = {
   members: MemberDirectoryListMember[]
   variant: 'public' | 'full'
   labels?: MemberDirectoryListLabels
+  praiseOptions?: readonly PraiseOption[]
   deleteMemberAction?: (formData: FormData) => Promise<void>
 }
 
@@ -108,10 +110,10 @@ const pageSizeOptions = [6, 9, 12, 24] as const
 const selectClassName =
   'border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 h-9 rounded-md border px-3 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:ring-[3px]'
 
-const getEulogyLabel = (value?: string) => {
+const getEulogyLabel = (value: string | undefined, praiseOptions: readonly PraiseOption[]) => {
   const customLabel = value?.trim()
 
-  return eulogyOptions.find(option => option.value === value)?.label ?? (customLabel || eulogyOptions[0].label)
+  return praiseOptions.find(option => option.value === value)?.label ?? customLabel ?? praiseOptions[0]?.label ?? ''
 }
 
 const getUsStateLabel = (value?: string) => {
@@ -138,6 +140,7 @@ export const MemberDirectoryList = ({
   members,
   variant,
   labels = defaultMemberDirectoryLabels,
+  praiseOptions = eulogyOptions,
   deleteMemberAction
 }: MemberDirectoryListProps) => {
   const pageSizeId = useId()
@@ -212,15 +215,30 @@ export const MemberDirectoryList = ({
           ) : variant === 'public' ? (
             <div className='grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
               {paginatedMembers.map(member => (
-                <PublicMemberCard key={member.clerkUserId} member={member} labels={labels} />
+                <PublicMemberCard
+                  key={member.clerkUserId}
+                  member={member}
+                  labels={labels}
+                  praiseOptions={praiseOptions}
+                />
               ))}
             </div>
           ) : deleteMemberAction ? (
-            <AdminMemberTable members={paginatedMembers} labels={labels} deleteMemberAction={deleteMemberAction} />
+            <AdminMemberTable
+              members={paginatedMembers}
+              labels={labels}
+              praiseOptions={praiseOptions}
+              deleteMemberAction={deleteMemberAction}
+            />
           ) : (
             <div className='space-y-4'>
               {paginatedMembers.map(member => (
-                <FullMemberCard key={member.clerkUserId} member={member} labels={labels} />
+                <FullMemberCard
+                  key={member.clerkUserId}
+                  member={member}
+                  labels={labels}
+                  praiseOptions={praiseOptions}
+                />
               ))}
             </div>
           )}
@@ -298,14 +316,16 @@ export const MemberDirectoryList = ({
 
 const PublicMemberCard = ({
   member,
-  labels
+  labels,
+  praiseOptions
 }: {
   member: MemberDirectoryListMember
   labels: MemberDirectoryListLabels
+  praiseOptions: readonly PraiseOption[]
 }) => {
   const fullName = getMemberFullName(member)
   const imageUrl = member.imageUrl ?? '/favicon/bamenausa-android-chrome-192.png'
-  const eulogies = getEulogyLabel(member.eulogyPreference)
+  const eulogies = getEulogyLabel(member.eulogyPreference, praiseOptions)
   const quarter = getBamenaCompoundLabel(member.bamenaCompound)
   const state = getUsStateLabel(member.usState)
   const hasLocation = Boolean(member.cameroonOriginCity || state)
@@ -341,14 +361,16 @@ const PublicMemberCard = ({
 
 const FullMemberCard = ({
   member,
-  labels
+  labels,
+  praiseOptions
 }: {
   member: MemberDirectoryListMember
   labels: MemberDirectoryListLabels
+  praiseOptions: readonly PraiseOption[]
 }) => {
   const fullName = getMemberFullName(member)
   const imageUrl = member.imageUrl ?? '/favicon/bamenausa-android-chrome-192.png'
-  const eulogies = getEulogyLabel(member.eulogyPreference)
+  const eulogies = getEulogyLabel(member.eulogyPreference, praiseOptions)
   const quarter = getBamenaCompoundLabel(member.bamenaCompound)
   const state = getUsStateLabel(member.usState)
   const hasLocation = Boolean(member.cameroonOriginCity || state)
@@ -400,10 +422,12 @@ const FullMemberCard = ({
 const AdminMemberTable = ({
   members,
   labels,
+  praiseOptions,
   deleteMemberAction
 }: {
   members: MemberDirectoryListMember[]
   labels: MemberDirectoryListLabels
+  praiseOptions: readonly PraiseOption[]
   deleteMemberAction: (formData: FormData) => Promise<void>
 }) => {
   return (
@@ -437,6 +461,7 @@ const AdminMemberTable = ({
               key={member.clerkUserId}
               member={member}
               labels={labels}
+              praiseOptions={praiseOptions}
               deleteMemberAction={deleteMemberAction}
             />
           ))}
@@ -449,15 +474,17 @@ const AdminMemberTable = ({
 const AdminMemberTableRow = ({
   member,
   labels,
+  praiseOptions,
   deleteMemberAction
 }: {
   member: MemberDirectoryListMember
   labels: MemberDirectoryListLabels
+  praiseOptions: readonly PraiseOption[]
   deleteMemberAction: (formData: FormData) => Promise<void>
 }) => {
   const fullName = getMemberFullName(member)
   const imageUrl = member.imageUrl ?? '/favicon/bamenausa-android-chrome-192.png'
-  const eulogies = getEulogyLabel(member.eulogyPreference)
+  const eulogies = getEulogyLabel(member.eulogyPreference, praiseOptions)
   const quarter = getBamenaCompoundLabel(member.bamenaCompound) || labels.noQuarter
   const state = getUsStateLabel(member.usState) || labels.noState
 

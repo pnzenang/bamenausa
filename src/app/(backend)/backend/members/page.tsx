@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 
 import { isAdminUser } from '@/lib/auth'
 import { deleteMemberProfile, listMemberProfilesWithTimeout } from '@/lib/member-profiles'
+import { listPraiseOptionsWithFallback } from '@/lib/praise-options'
 
 const deleteMemberAction = async (formData: FormData) => {
   'use server'
@@ -33,6 +34,7 @@ const deleteMemberAction = async (formData: FormData) => {
 const MembersPage = async () => {
   let members: Awaited<ReturnType<typeof listMemberProfilesWithTimeout>> = []
   let membersError = false
+  const praiseOptions = await listPraiseOptionsWithFallback()
 
   try {
     members = await listMemberProfilesWithTimeout()
@@ -73,7 +75,12 @@ const MembersPage = async () => {
         </p>
       )}
 
-      <MemberDirectoryList members={directoryMembers} variant='full' deleteMemberAction={deleteMemberAction} />
+      <MemberDirectoryList
+        members={directoryMembers}
+        variant='full'
+        praiseOptions={praiseOptions}
+        deleteMemberAction={deleteMemberAction}
+      />
     </div>
   )
 }

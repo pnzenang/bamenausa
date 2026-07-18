@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import MarylandMeetingMinutesViewer from '@/components/pages/maryland-meeting-minutes-viewer'
 
 import type { Locale } from '@/lib/i18n'
-import { getMarylandMeetingAgendaItems } from '@/lib/maryland-meeting-minutes'
+import { getMarylandMeetingAgendaItemsWithAutomaticTranslations } from '@/lib/maryland-meeting-minutes'
 import { marylandMeetingAddress } from '@/lib/maryland-meetings'
 
 type MarylandMeetingMinutesPageProps = {
@@ -70,7 +70,7 @@ const marylandMeetingMinutesContent = {
   }
 } as const
 
-const MarylandMeetingMinutesPage = ({
+const MarylandMeetingMinutesPage = async ({
   locale,
   meetingDate,
   publishedAgendaTitles,
@@ -81,7 +81,7 @@ const MarylandMeetingMinutesPage = ({
 }: MarylandMeetingMinutesPageProps) => {
   const content = marylandMeetingMinutesContent[locale]
 
-  const agendaItems = getMarylandMeetingAgendaItems(
+  const agendaItems = await getMarylandMeetingAgendaItemsWithAutomaticTranslations(
     locale,
     publishedAgendaTitles,
     publishedAgendaDetails,

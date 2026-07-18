@@ -135,6 +135,11 @@ const ensureMarylandMeetingMinutesTable = async () => {
 
       await getSql()`
         ALTER TABLE maryland_meeting_minutes
+        ADD COLUMN IF NOT EXISTS agenda_details JSONB NOT NULL DEFAULT '[]'::jsonb
+      `
+
+      await getSql()`
+        ALTER TABLE maryland_meeting_minutes
         ADD COLUMN IF NOT EXISTS translated_agenda_titles JSONB NOT NULL DEFAULT '[]'::jsonb
       `
 
@@ -249,6 +254,20 @@ const localizePublishedAgendaDetails = (details: string, index: number, locale: 
   return locale === 'fr' ? translateCustomPublishedAgendaDetailsToFrench(trimmedDetails) : trimmedDetails
 }
 
+const getStaticFrenchAgendaTitle = (title: string, index: number) => {
+  const trimmedTitle = title.trim()
+  const localizedTitle = localizePublishedAgendaTitle(trimmedTitle, index, 'fr')
+
+  return localizedTitle !== trimmedTitle ? localizedTitle : ''
+}
+
+const getStaticFrenchAgendaDetails = (details: string, index: number) => {
+  const trimmedDetails = details.trim()
+  const localizedDetails = localizePublishedAgendaDetails(trimmedDetails, index, 'fr')
+
+  return localizedDetails !== trimmedDetails ? localizedDetails : ''
+}
+
 const getAgendaItemCount = (
   agendaTitles: string[],
   agendaDetails: string[],
@@ -339,6 +358,86 @@ export const getMarylandMeetingAgendaItems = (
   })
 }
 
+export const getMarylandMeetingAgendaItemsWithAutomaticTranslations = async (
+  locale: Locale,
+  publishedAgendaTitles?: string[],
+  publishedAgendaDetails?: string[],
+  translatedAgendaTitles?: string[],
+  translatedAgendaDetails?: string[]
+): Promise<MarylandMeetingAgendaDisplayItem[]> => {
+  const agendaItems = getMarylandMeetingAgendaItems(
+    locale,
+    publishedAgendaTitles,
+    publishedAgendaDetails,
+    translatedAgendaTitles,
+    translatedAgendaDetails
+  )
+
+  if (locale !== 'fr' || agendaItems.length === 0) return agendaItems
+
+  const agendaItemCount = getAgendaItemCount(publishedAgendaTitles ?? [], publishedAgendaDetails ?? [])
+  const normalizedTitles = normalizeMarylandMeetingAgendaTitles(publishedAgendaTitles ?? [], 'en', agendaItemCount)
+  const normalizedDetails = normalizeMarylandMeetingAgendaDetails(publishedAgendaDetails ?? [], agendaItemCount)
+  const normalizedTranslatedTitles = normalizeTranslatedAgendaItems(translatedAgendaTitles ?? [], agendaItemCount)
+  const normalizedTranslatedDetails = normalizeTranslatedAgendaItems(translatedAgendaDetails ?? [], agendaItemCount)
+
+  const missingTranslations: {
+    field: keyof MarylandMeetingAgendaDisplayItem
+    index: number
+    text: string
+  }[] = []
+
+  normalizedTitles.forEach((title, index) => {
+    if (normalizedTranslatedTitles[index]?.trim()) return
+
+    const trimmedTitle = title.trim()
+
+    if (trimmedTitle && !getStaticFrenchAgendaTitle(trimmedTitle, index)) {
+      missingTranslations.push({
+        field: 'title',
+        index,
+        text: trimmedTitle
+      })
+    }
+  })
+
+  normalizedDetails.forEach((details, index) => {
+    if (normalizedTranslatedDetails[index]?.trim()) return
+
+    const trimmedDetails = details.trim()
+
+    if (trimmedDetails && !getStaticFrenchAgendaDetails(trimmedDetails, index)) {
+      missingTranslations.push({
+        field: 'details',
+        index,
+        text: trimmedDetails
+      })
+    }
+  })
+
+  if (missingTranslations.length === 0) return agendaItems
+
+  const translationResult = await translateTextsToFrench(missingTranslations.map(item => item.text))
+
+  return missingTranslations.reduce(
+    (items, item, translationIndex) => {
+      const translation = translationResult.translations[translationIndex]?.trim()
+
+      if (!translation) return items
+
+      return items.map((agendaItem, agendaIndex) =>
+        agendaIndex === item.index
+          ? {
+              ...agendaItem,
+              [item.field]: translation
+            }
+          : agendaItem
+      )
+    },
+    agendaItems
+  )
+}
+
 export const listMarylandMeetingMinutes = async () => {
   await ensureMarylandMeetingMinutesTable()
 
@@ -400,8 +499,16 @@ export const saveMarylandMeetingMinutes = async (
   const normalizedTitles = normalizedAgendaItems.map((item, index) => item.title || getGenericAgendaTitle(index))
   const normalizedDetails = normalizedAgendaItems.map(item => item.details)
   const translationResult = await translateTextsToFrench([...normalizedTitles, ...normalizedDetails])
-  const translatedTitles = translationResult.translations.slice(0, normalizedTitles.length)
-  const translatedDetails = translationResult.translations.slice(normalizedTitles.length)
+  const automaticTranslatedTitles = translationResult.translations.slice(0, normalizedTitles.length)
+  const automaticTranslatedDetails = translationResult.translations.slice(normalizedTitles.length)
+
+  const translatedTitles = normalizedTitles.map(
+    (title, index) => automaticTranslatedTitles[index]?.trim() || getStaticFrenchAgendaTitle(title, index)
+  )
+
+  const translatedDetails = normalizedDetails.map(
+    (details, index) => automaticTranslatedDetails[index]?.trim() || getStaticFrenchAgendaDetails(details, index)
+  )
 
   const rows = (await getSql()`
     INSERT INTO maryland_meeting_minutes (
